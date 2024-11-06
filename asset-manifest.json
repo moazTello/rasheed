@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Rasheed/static/css/main.e6fb42d1.css",
-    "main.js": "/Rasheed/static/js/main.ad356491.js",
-    "static/media/Login_logo.png": "/Rasheed/static/media/Login_logo.a256d84f270a58dbcdc3.png",
-    "static/media/background.png": "/Rasheed/static/media/background.2d2b72dd67ec4d75ea23.png",
-    "index.html": "/Rasheed/index.html",
-    "main.e6fb42d1.css.map": "/Rasheed/static/css/main.e6fb42d1.css.map",
-    "main.ad356491.js.map": "/Rasheed/static/js/main.ad356491.js.map"
+    "main.css": "/rasheed/static/css/main.0c02301e.css",
+    "main.js": "/rasheed/static/js/main.5c73b661.js",
+    "static/media/Login_logo.png": "/rasheed/static/media/Login_logo.a256d84f270a58dbcdc3.png",
+    "static/media/background.png": "/rasheed/static/media/background.2d2b72dd67ec4d75ea23.png",
+    "index.html": "/rasheed/index.html",
+    "main.0c02301e.css.map": "/rasheed/static/css/main.0c02301e.css.map",
+    "main.5c73b661.js.map": "/rasheed/static/js/main.5c73b661.js.map"
   },
   "entrypoints": [
-    "static/css/main.e6fb42d1.css",
-    "static/js/main.ad356491.js"
+    "static/css/main.0c02301e.css",
+    "static/js/main.5c73b661.js"
   ]
 }
