@@ -2,7 +2,8 @@ import React from 'react'
 
 const Traffics = () => {
   return (
-    <div>Traffics</div>
+    <div className='h-[100vh]'>
+      Traffics</div>
   )
 }
 

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 const Organizations = () => {
   const navigate = useNavigate();
   return (
-    <div className="w-full h-[85vh] bg-slate-100">
+    <div className="w-full h-[100vh] pt-8 md:pt-32">
       <div className="w-full flex justify-between items-center p-4">
         <button
           onClick={() => navigate('/rasheed/organizations/addorganization')}
@@ -11,7 +11,7 @@ const Organizations = () => {
         >
           إضافة منظمة +
         </button>
-        <p className="w-full text-right text-primary text-sm md:text-lg">جدول كل المنظمات</p>
+        <p className="w-full text-right text-white text-sm md:text-lg">جدول كل المنظمات</p>
       </div>
       <div className="w-full p-2">
         <OrganizationsTable />

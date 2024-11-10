@@ -10,3 +10,6 @@
     scrollbar-width: none;
   }
 }
+body{
+  background-image: linear-gradient(to bottom, #1B1B35, #4953EC, #1B1B35) ;
+}

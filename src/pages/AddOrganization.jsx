@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import InputField from '../components/Fields/InputField';
 import CustomButton from '../components/Fields/CustomButton';
-import { images } from '../constants';
-import { useNavigate } from 'react-router-dom';
+// import { images } from '../constants';
+// import { useNavigate } from 'react-router-dom';
 import CustomTable from '../components/Tables/CustomTable';
 import SkillsTable from '../components/Tables/SkillsTable';
 import { IoIosCloseCircle } from 'react-icons/io';
@@ -12,7 +12,7 @@ import { FaWhatsapp, FaInstagram, FaYoutube, FaFacebookSquare } from 'react-icon
 import { LiaTelegram } from 'react-icons/lia';
 import { FaXTwitter } from 'react-icons/fa6';
 const AddOrganization = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [detailsModal, setDetailsModal] = useState(false);
   const [skillsModal, setSkillsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
@@ -24,6 +24,7 @@ const AddOrganization = () => {
     getValues,
     setValue,
     control,
+    watch,
   } = useForm();
   const {
     fields: details,
@@ -54,7 +55,8 @@ const AddOrganization = () => {
     e.preventDefault();
     const data = getValues();
     // navigate('/rasheed/Organizations');
-    console.log(data)
+    console.log(data);
+    console.log(watch('LogoImage'))
   };
   const addDetails = () => {
     const data = getValues();
@@ -97,11 +99,11 @@ const AddOrganization = () => {
     setDetailsModal(true);
   };
   return (
-    <div className="w-full h-full relative flex justify-center items-center">
+    <div className="w-full h-full relative flex justify-center items-center pt-8 md:pt-32">
       <div className="w-full flex flex-col justify-center items-center">
-        <img className="w-64" src={images.loginLogo} alt="لوغو" />
-        <p className="w-full text-center text-xl mt-5 text-white font-bold py-2 bg-primary">إضافة منظمة</p>
-        <form onSubmit={handleSubmit} className="p-8 w-full md:w-[80%] bg-slate-100 rounded-b-lg">
+        {/* <img className="w-64" src={images.loginLogo} alt="لوغو" /> */}
+        <p className="w-[80%] rounded-lg text-center text-sm md:text-xl text-white font-bold py-2 bg-[#0D0F2D] bg-opacity-25 my-10">إضافة منظمة</p>
+        <form onSubmit={handleSubmit} className="p-8 w-full md:w-[80%] bg-[#0D0F2D] bg-opacity-25 rounded-lg">
           <div className="flex flex-col-reverse md:flex-row  items-center justify-between ">
             <InputField
               type="number"
@@ -166,42 +168,42 @@ const AddOrganization = () => {
               type="email"
             />
           </div>
+          <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة</p>
+          <textarea
+            required
+            className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
+            {...register('Details_1')}
+            placeholder="... منظمة ****** منظمة مجتمع مدني غير حكومية غير ربحية"
+          />
           <div className="flex flex-col-reverse md:flex-row w-full items-center justify-between ">
             <div className="flex flex-col items-end w-full mr-0 md:mr-2">
-              <p className="text-right pr-1 text-primary text-sm md:text-lg my-2">الرسالة</p>
+              <p className="text-right pr-1 text-white text-sm md:text-lg my-2">الرسالة</p>
               <textarea
                 required
-                className="w-full outline-none min-h-40 resize-none rounded-lg border-2 border-primary text-right p-2 text-primary text-sm md:text-lg"
+                className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
                 {...register('Message')}
-                placeholder="الارتقاء بالمجتمع المدني زراعياً واقتصادياً وعلمياً وثقافياً وإعادة الاعمار والمساهمة في تطوير الحياة الاجتماعية والارتقاء بواقع المرأة ومشاركتها في جميع المجالات وحماية ودعم الطفولة ومنع استغلالها ضمن المجتمع المحلي ومخيمات النازحين"
+                placeholder="الارتقاء بالمجتمع المدني زراعياً واقتصادياً وعلمياً وثقافياً وإعادة الاعمار والمساهمة في تطوير الحياة الاجتماعية والارتقاء بواقع المرأة ومشاركتها في جميع المجالات وحماية ودعم الطفولة ومنع استغلالها "
               />
             </div>
             <div className="flex flex-col items-end w-full ml-0 md:ml-2">
-              <p className="text-right pr-1 text-primary text-sm md:text-lg my-2">الرؤية</p>
+              <p className="text-right pr-1 text-white text-sm md:text-lg my-2">الرؤية</p>
               <textarea
                 required
-                className="w-full outline-none min-h-40 resize-none rounded-lg border-2 border-primary text-right p-2 text-primary text-sm md:text-lg"
+                className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
                 {...register('View')}
                 placeholder="الوصول إلى مجتمع مدني ينعم بالسلام والاستقرار والارتقاء به للتعايش مع المجتمعات الاخرى ومواكبة التطورات بشكل إيجابي وفعّال ورفع قدرات المرأة وتعزيز دورها بالمجتمع"
               />
             </div>
           </div>
-          <p className="text-right pr-1 text-primary text-sm md:text-lg my-4">سمة المنظمة</p>
-          <textarea
-            required
-            className="w-full outline-none min-h-40 resize-none rounded-lg border-2 border-primary text-right p-2 text-primary text-sm md:text-lg"
-            {...register('Details_1')}
-            placeholder="... منظمة ****** منظمة مجتمع مدني غير حكومية غير ربحية"
-          />
-          <div className="w-full flex justify-between items-center mb-4">
+          <div className="w-full flex justify-between items-center my-4">
             <button
               type="button"
               onClick={addDetailModal}
-              className="p-2 bg-primary rounded-lg text-sm md:text-md w-40 text-white border-2 border-primary hover:bg-white hover:text-primary"
+              className="p-2 bg-[#532DF8] rounded-lg text-sm md:text-md w-40 text-white border-2 border-[#532DF8] hover:bg-white hover:text-[#532DF8]"
             >
               إضافة وصف +
             </button>
-            <p className="text-right pr-1 text-primary text-sm md:text-lg my-4">وصف المنظمة</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة</p>
           </div>
           {details.length > 0 && <CustomTable data={details} remove={remove} edit={editDetail} />}
           <div className="w-full flex justify-between items-center mb-4">
@@ -210,9 +212,9 @@ const AddOrganization = () => {
               onClick={() => setSkillsModal(true)}
               className="p-2 bg-primary rounded-lg text-sm md:text-md w-40 text-white border-2 border-primary hover:bg-white hover:text-primary"
             >
-              إضافة ميزة +
+              إضافة قيم +
             </button>
-            <p className="text-right pr-1 text-primary text-sm md:text-lg my-4">مميزات المنظمة</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">قيم المنظمة</p>
           </div>
           {skills.length > 0 && <SkillsTable data={skills} remove={removeSkills} />}
           <div className="w-full flex justify-between items-center mb-4">
@@ -223,7 +225,7 @@ const AddOrganization = () => {
             >
               إضافة رقم +
             </button>
-            <p className="text-right pr-1 text-primary text-sm md:text-lg my-4">المنظمة بالأرقام</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">المنظمة بالأرقام</p>
           </div>
           {numbers.length > 0 && <NumbersTable data={numbers} remove={removeNumbers} />}
           <div className="w-full flex justify-between items-center mb-4">
@@ -234,25 +236,42 @@ const AddOrganization = () => {
             >
               إضافة تواصل +
             </button>
-            <p className="text-right pr-1 text-primary text-sm md:text-lg my-4">التواصل الاجتمااعي</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">التواصل الاجتمااعي</p>
           </div>
+          
+          <div className="w-full flex justify-center h-12 items-center mb-4">
+            <label
+              htmlFor="logo-image"
+              className="w-full py-4 rounded-lg hover:bg-white hover:text-primary text-center text-white bg-primary cursor-pointer"
+            >
+              {watch('LogoImage') ? 'تعديل اللوغو ' : 'إضافة لوغو المنظمة'}
+            </label>
+          </div>
+          <input {...register('LogoImage')} id="logo-image" type="file" className="hidden" />
+          {watch('LogoImage') && watch('LogoImage').length > 0 && (
+            <img
+              // src={}
+              src={watch('LogoImage').length && URL.createObjectURL(watch('LogoImage')[0])}
+              alt="logo"
+            />
+          )}
           <CustomButton type="submit" buttonText="إضافة" />
           {detailsModal && (
-            <div className="fixed top-0 left-0 bg-primary w-full h-full bg-opacity-50">
-              <div className="fixed top-[25%] left-4 md:left-[25%] bg-white w-[90%] md:w-[50%] h-80 rounded-lg">
+            <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
+              <div className="fixed top-[25%] left-4 md:left-[25%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[90%] md:w-[50%] h-80 rounded-lg">
                 <div className="w-full flex justify-between p-5">
                   <button
                     type="button"
                     onClick={() => setDetailsModal(false)}
-                    className="text-primary hover:text-black"
+                    className="text-white hover:text-black"
                   >
                     <IoIosCloseCircle size={28} />
                   </button>
-                  <p className="text-right text-sm md:text-lg text-primary font-bold">إضافة وصف</p>
+                  <p className="text-right text-sm md:text-lg text-white font-bold">إضافة وصف</p>
                 </div>
                 <div className="w-full px-5">
                   <textarea
-                    className="w-full outline-none min-h-40 resize-none rounded-lg border-2 border-primary text-right p-2 text-primary text-sm md:text-lg"
+                    className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
                     {...register('DetailsCustom')}
                     placeholder="تمارس نشاطها تعمل بقطاعات الزراعة والخدمات والتعليم وسبل العيش والتماسك المجتمعي والقضايا التي تهم المرأة وتعمل كذلك على تمكين الشباب كما تعمل منظمة إنماء الفرات على ترسيخ قيم مبادئ الديمقراطية وتعمل جاهدة لبناء مجتمع مدني قادر على تحمل المسؤوليات في المستقبل "
                   />
@@ -262,18 +281,18 @@ const AddOrganization = () => {
             </div>
           )}
           {skillsModal && (
-            <div className="fixed top-0 left-0 bg-primary w-full h-full bg-opacity-50">
-              <div className="fixed top-[25%] left-4 md:left-[25%] bg-white w-[90%] md:w-[50%] h-80 rounded-lg">
+            <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
+              <div className="fixed top-[25%] left-4 md:left-[25%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[90%] md:w-[50%] h-80 rounded-lg">
                 <div className="w-full flex justify-between p-5">
-                  <button type="button" onClick={() => setSkillsModal(false)} className="text-primary hover:text-black">
+                  <button type="button" onClick={() => setSkillsModal(false)} className="text-white hover:text-black">
                     <IoIosCloseCircle size={28} />
                   </button>
-                  <p className="text-right text-sm md:text-lg text-primary font-bold">إضافة ميزة</p>
+                  <p className="text-right text-sm md:text-lg text-white font-bold">إضافة قيم</p>
                 </div>
                 <div className="w-full px-5">
                   <InputField
                     register={register('SkillsCustom')}
-                    headerText="الميزة"
+                    headerText="القيمة"
                     placeholder="المهنية والموضوعية"
                     error={errors?.form}
                     isRequired={true}
@@ -284,17 +303,17 @@ const AddOrganization = () => {
             </div>
           )}
           {numbersModal && (
-            <div className="fixed top-0 left-0 bg-primary w-full h-full bg-opacity-50">
-              <div className="fixed top-[25%] left-4 md:left-[25%] bg-white w-[90%] md:w-[50%] rounded-lg">
+            <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
+              <div className="fixed top-[25%] left-4 md:left-[25%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[90%] md:w-[50%] rounded-lg">
                 <div className="w-full flex justify-between p-5">
                   <button
                     type="button"
                     onClick={() => setNumbersModal(false)}
-                    className="text-primary hover:text-black"
+                    className="text-white hover:text-black"
                   >
                     <IoIosCloseCircle size={28} />
                   </button>
-                  <p className="text-right text-sm md:text-lg text-primary font-bold">إضافة رقم</p>
+                  <p className="text-right text-sm md:text-lg text-white font-bold">إضافة رقم</p>
                 </div>
                 <div className="w-full px-5">
                   <InputField
@@ -318,17 +337,17 @@ const AddOrganization = () => {
             </div>
           )}
           {socialsModal && (
-            <div className="fixed top-0 left-0 bg-primary w-full h-full bg-opacity-50">
-              <div className="fixed top-10 md:top-[16%] left-4 md:left-[25%] bg-white w-[90%] md:w-[50%] rounded-lg">
+            <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
+              <div className="fixed top-10 md:top-[16%] left-4 md:left-[25%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[90%] md:w-[50%] rounded-lg">
                 <div className="w-full flex justify-between p-5">
                   <button
                     type="button"
                     onClick={() => setSocialsModal(false)}
-                    className="text-primary hover:text-black"
+                    className="text-white hover:text-black"
                   >
                     <IoIosCloseCircle size={28} />
                   </button>
-                  <p className="text-right text-sm md:text-lg text-primary font-bold">إضافة تواصل</p>
+                  <p className="text-right text-sm md:text-lg text-white font-bold">إضافة تواصل</p>
                 </div>
                 <div className="w-full px-5">
                   <div className="flex flex-col-reverse md:flex-row items-center justify-between ">
@@ -378,6 +397,13 @@ const AddOrganization = () => {
                       type="number"
                     />
                   </div>
+                  <InputField
+                    register={register('website')}
+                    customStyleComponent="ml-2"
+                    headerText="موقع المنظمة"
+                    customStyleHeader="mr-2"
+                    placeholder="www...."
+                  />
                   <CustomButton buttonText="إضافة" type="button" onClick={() => setSocialsModal(false)} />
                 </div>
               </div>

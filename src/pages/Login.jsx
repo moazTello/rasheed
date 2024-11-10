@@ -9,20 +9,20 @@ const Login = () => {
   const {
     register,
     formState: { errors },
-    setError,
-    getValues,
+    // setError,
+    // getValues,
   } = useForm();
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = getValues();
+    // const data = getValues();
     navigate('/rasheed/Organizations');
   };
   return (
-    <div className="w-full h-full flex justify-center items-center">
-      <div className="w-full flex flex-col justify-center items-center pt-10 md:pt-20">
-        <img className="w-64" src={images.loginLogo} alt="لوغو" />
-        <p className="w-full text-center text-xl mt-5 text-white font-bold py-2 bg-primary">تسجيل الدخول</p>
-        <form onSubmit={handleSubmit} className="p-8 w-full md:w-[80%] bg-slate-200 rounded-b-lg">
+    <div className="w-full h-[100vh] bg-opacity-90 flex justify-center items-center">
+      <div className="w-full flex flex-col justify-center items-center pt-0 md:pt-0">
+        <img className="w-40 md:w-60 rounded-3xl" src={images.loginLogo} alt="لوغو" />
+        <p className="w-[95%] md:w-[80%] text-center text-lg md:text-xl my-5 rounded-t-xl text-white font-bold py-2 bg-[#181818] bg-opacity-50">تسجيل الدخول</p>
+        <form onSubmit={handleSubmit} className="p-8 w-[95%] md:w-[80%] bg-[#181818] bg-opacity-50 rounded-b-lg">
           <InputField
             register={register('userName')}
             headerText="اسم المستخدم"

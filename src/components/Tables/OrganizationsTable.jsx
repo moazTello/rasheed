@@ -1,6 +1,8 @@
-import { FaCircleCheck, FaTrashCan } from 'react-icons/fa6';
-import { IoIosCloseCircle } from 'react-icons/io';
-import { IoCloseSharp } from 'react-icons/io5';
+import { 
+  // FaCircleCheck, 
+  FaTrashCan } from 'react-icons/fa6';
+// import { IoIosCloseCircle } from 'react-icons/io';
+// import { IoCloseSharp } from 'react-icons/io5';
 import { FaPaintBrush } from 'react-icons/fa';
 import { LuClipboardEdit } from 'react-icons/lu';
 import { BiDetail } from 'react-icons/bi';
@@ -14,7 +16,7 @@ const OrganizationsTable = () => {
         <thead>
           <tr
             className={`${
-              tableColor ? 'bg-stone-600 text-sm text-white w-full' : 'bg-slate-50 w-full text-sm text-primary'
+              tableColor ? 'bg-stone-900 bg-opacity-75 text-sm text-white w-full' : 'bg-slate-50 w-full text-sm text-primary'
             } `}
           >
             <th className="px-2 min-w-20">الحذف</th>
@@ -34,11 +36,11 @@ const OrganizationsTable = () => {
         </thead>
         <tbody className=''>
           {/* <tr
-            className={`${
-              tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
-            } `}
+        className={`${
+          tableColor
+            ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-y-2 border-[#21172e]'
+            : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
+        } `}
             // className="w-full hover:bg-slate-300 bg-slate-200 text-stone-900"
           >
             <td colSpan="10">
@@ -63,13 +65,15 @@ const OrganizationsTable = () => {
             </td>
           </tr> */}
           {/* {items?.map((item, index) => ( */}
-         
+  
+
+
           <tr
             // key={index}
             className={`${
               tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
             } `}
             // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
           >
@@ -77,7 +81,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                 >
                   <FaTrashCan />
                 </button>
@@ -87,7 +91,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
                 >
                   <LuClipboardEdit />
                 </button>
@@ -120,8 +124,8 @@ const OrganizationsTable = () => {
             // key={index}
             className={`${
               tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
             } `}
             // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
           >
@@ -129,7 +133,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                 >
                   <FaTrashCan />
                 </button>
@@ -139,7 +143,272 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
+                >
+                  <LuClipboardEdit />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
+                >
+                  <BiDetail />
+                </button>
+              </div>
+            </td>
+            <td className="min-w-40 px-2 text-center">0900000000</td>
+            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
+            <td className="min-w-40 px-2 text-center">دمشق</td>
+            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
+            <td className="min-w-40 px-2 text-center">
+              <div className="w-full flex justify-center py-1">
+                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
+              </div>
+            </td>
+            <th className="p-4 text-center">1</th>
+          </tr>
+
+
+
+          <tr
+            // key={index}
+            className={`${
+              tableColor
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
+            } `}
+            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
+          >
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => handleDelete(item)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
+                >
+                  <FaTrashCan />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
+                >
+                  <LuClipboardEdit />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
+                >
+                  <BiDetail />
+                </button>
+              </div>
+            </td>
+            <td className="min-w-40 px-2 text-center">0900000000</td>
+            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
+            <td className="min-w-40 px-2 text-center">دمشق</td>
+            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
+            <td className="min-w-40 px-2 text-center">
+              <div className="w-full flex justify-center py-1">
+                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
+              </div>
+            </td>
+            <th className="p-4 text-center">1</th>
+          </tr>
+
+
+
+          <tr
+            // key={index}
+            className={`${
+              tableColor
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
+            } `}
+            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
+          >
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => handleDelete(item)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
+                >
+                  <FaTrashCan />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
+                >
+                  <LuClipboardEdit />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
+                >
+                  <BiDetail />
+                </button>
+              </div>
+            </td>
+            <td className="min-w-40 px-2 text-center">0900000000</td>
+            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
+            <td className="min-w-40 px-2 text-center">دمشق</td>
+            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
+            <td className="min-w-40 px-2 text-center">
+              <div className="w-full flex justify-center py-1">
+                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
+              </div>
+            </td>
+            <th className="p-4 text-center">1</th>
+          </tr>
+
+
+
+          <tr
+            // key={index}
+            className={`${
+              tableColor
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
+            } `}
+            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
+          >
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => handleDelete(item)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
+                >
+                  <FaTrashCan />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
+                >
+                  <LuClipboardEdit />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
+                >
+                  <BiDetail />
+                </button>
+              </div>
+            </td>
+            <td className="min-w-40 px-2 text-center">0900000000</td>
+            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
+            <td className="min-w-40 px-2 text-center">دمشق</td>
+            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
+            <td className="min-w-40 px-2 text-center">
+              <div className="w-full flex justify-center py-1">
+                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
+              </div>
+            </td>
+            <th className="p-4 text-center">1</th>
+          </tr>
+
+
+
+          <tr
+            // key={index}
+            className={`${
+              tableColor
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
+            } `}
+            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
+          >
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => handleDelete(item)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
+                >
+                  <FaTrashCan />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
+                >
+                  <LuClipboardEdit />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
+                >
+                  <BiDetail />
+                </button>
+              </div>
+            </td>
+            <td className="min-w-40 px-2 text-center">0900000000</td>
+            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
+            <td className="min-w-40 px-2 text-center">دمشق</td>
+            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
+            <td className="min-w-40 px-2 text-center">
+              <div className="w-full flex justify-center py-1">
+                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
+              </div>
+            </td>
+            <th className="p-4 text-center">1</th>
+          </tr>
+
+
+
+          <tr
+            // key={index}
+            className={`${
+              tableColor
+                ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
+            } `}
+            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
+          >
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => handleDelete(item)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
+                >
+                  <FaTrashCan />
+                </button>
+              </div>
+            </td>
+            <td className="px-6 min-w-20">
+              <div className="w-full flex justify-center py-2">
+                <button
+                  // onClick={() => setUpdateBox(item.id)}
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
                 >
                   <LuClipboardEdit />
                 </button>
@@ -171,8 +440,8 @@ const OrganizationsTable = () => {
             // key={index}
             className={`${
               tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
+                ? 'bg-stone-900 bg-opacity-75 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
             } `}
             // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
           >
@@ -180,7 +449,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                 >
                   <FaTrashCan />
                 </button>
@@ -190,7 +459,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
                 >
                   <LuClipboardEdit />
                 </button>
@@ -218,12 +487,13 @@ const OrganizationsTable = () => {
             <th className="p-4 text-center">1</th>
           </tr>
 
+
           <tr
             // key={index}
             className={`${
               tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
+                ? 'bg-stone-900 bg-opacity-75 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
             } `}
             // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
           >
@@ -231,7 +501,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                 >
                   <FaTrashCan />
                 </button>
@@ -241,7 +511,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
                 >
                   <LuClipboardEdit />
                 </button>
@@ -269,12 +539,13 @@ const OrganizationsTable = () => {
             <th className="p-4 text-center">1</th>
           </tr>
 
+
           <tr
             // key={index}
             className={`${
               tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
+                ? 'bg-stone-900 bg-opacity-75 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
+                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
             } `}
             // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
           >
@@ -282,7 +553,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                 >
                   <FaTrashCan />
                 </button>
@@ -292,7 +563,7 @@ const OrganizationsTable = () => {
               <div className="w-full flex justify-center py-2">
                 <button
                   // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
+                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
                 >
                   <LuClipboardEdit />
                 </button>
@@ -320,260 +591,6 @@ const OrganizationsTable = () => {
             <th className="p-4 text-center">1</th>
           </tr>
 
-          <tr
-            // key={index}
-            className={`${
-              tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
-            } `}
-            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
-          >
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <LuClipboardEdit />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
-                >
-                  <BiDetail />
-                </button>
-              </div>
-            </td>
-            <td className="min-w-40 px-2 text-center">0900000000</td>
-            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
-            <td className="min-w-40 px-2 text-center">دمشق</td>
-            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
-            <td className="min-w-40 px-2 text-center">
-              <div className="w-full flex justify-center py-1">
-                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
-              </div>
-            </td>
-            <th className="p-4 text-center">1</th>
-          </tr>
-
-          <tr
-            // key={index}
-            className={`${
-              tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
-            } `}
-            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
-          >
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <LuClipboardEdit />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
-                >
-                  <BiDetail />
-                </button>
-              </div>
-            </td>
-            <td className="min-w-40 px-2 text-center">0900000000</td>
-            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
-            <td className="min-w-40 px-2 text-center">دمشق</td>
-            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
-            <td className="min-w-40 px-2 text-center">
-              <div className="w-full flex justify-center py-1">
-                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
-              </div>
-            </td>
-            <th className="p-4 text-center">1</th>
-          </tr>
-
-          <tr
-            // key={index}
-            className={`${
-              tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
-            } `}
-            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
-          >
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <LuClipboardEdit />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
-                >
-                  <BiDetail />
-                </button>
-              </div>
-            </td>
-            <td className="min-w-40 px-2 text-center">0900000000</td>
-            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
-            <td className="min-w-40 px-2 text-center">دمشق</td>
-            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
-            <td className="min-w-40 px-2 text-center">
-              <div className="w-full flex justify-center py-1">
-                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
-              </div>
-            </td>
-            <th className="p-4 text-center">1</th>
-          </tr>
-
-          <tr
-            // key={index}
-            className={`${
-              tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
-            } `}
-            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
-          >
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <LuClipboardEdit />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
-                >
-                  <BiDetail />
-                </button>
-              </div>
-            </td>
-            <td className="min-w-40 px-2 text-center">0900000000</td>
-            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
-            <td className="min-w-40 px-2 text-center">دمشق</td>
-            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
-            <td className="min-w-40 px-2 text-center">
-              <div className="w-full flex justify-center py-1">
-                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
-              </div>
-            </td>
-            <th className="p-4 text-center">1</th>
-          </tr>
-
-          <tr
-            // key={index}
-            className={`${
-              tableColor
-                ? 'bg-stone-600 text-white w-full hover:bg-stone-700 text-sm border-y-2 border-[#3E8AA9]'
-                : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-y-2 border-[#3E8AA9]'
-            } `}
-            // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
-          >
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => handleDelete(item)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <FaTrashCan />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
-                >
-                  <LuClipboardEdit />
-                </button>
-              </div>
-            </td>
-            <td className="px-6 min-w-20">
-              <div className="w-full flex justify-center py-2">
-                <button
-                  // onClick={() => setUpdateBox(item.id)}
-                  className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
-                >
-                  <BiDetail />
-                </button>
-              </div>
-            </td>
-            <td className="min-w-40 px-2 text-center">0900000000</td>
-            <td className="min-w-40 px-2 text-center">www Ahmad com</td>
-            <td className="min-w-40 px-2 text-center">دمشق</td>
-            <td className="min-w-40 px-2 text-center">الحياة الجديدة</td>
-            <td className="min-w-40 px-2 text-center">
-              <div className="w-full flex justify-center py-1">
-                <img className="w-16 rounded-full border-2 border-primary p-0.5" src={images.loginLogo} alt="لوغو" />
-              </div>
-            </td>
-            <th className="p-4 text-center">1</th>
-          </tr>
 
         </tbody>
       </table>
