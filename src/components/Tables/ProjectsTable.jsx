@@ -9,25 +9,19 @@ import { LuClipboardEdit } from 'react-icons/lu';
 import { BiDetail } from 'react-icons/bi';
 import { useState } from 'react';
 import { images } from '../../constants';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/useStore';
-const OrganizationsTable = ({ data }) => {
-  const { deleteOrganization, Organizations, setOrganizData } = useStore()
+const ProjectsTable = ({ data }) => {
+  const { deleteProjectMaster } = useStore();
+  const { orgid } = useParams();
   const [tableColor, setTableColor] = useState(true);
   const navigate = useNavigate();
-  const deletOrg = async (id) => {
-     // eslint-disable-next-line no-restricted-globals
-    var result = confirm("هل أنت متأكد من حذف المنظمة ؟");
-    if (!result) return;
+  const handleDelete = async (id) => {
     try{
-      await deleteOrganization(id)
+      await deleteProjectMaster(orgid,id)
     }catch(error){
       console.log(error)
     }
-  }
-  const moveTo = (id) => {
-    setOrganizData(Organizations.find((item) => item.id === id))
-    navigate(`/rasheed/organizations/${id}`)
   }
   return (
     <div className="overflow-auto rounded-lg h-fit max-h-[70vh] no-scrollbar">
@@ -43,10 +37,9 @@ const OrganizationsTable = ({ data }) => {
             <th className="px-2 min-w-20">الحذف</th>
             <th className="px-2 min-w-20">التعديل</th>
             <th className="px-2 min-w-20">التفاصيل</th>
-            <th className="p-4">الجوال</th>
-            <th className="p-4">البريد</th>
+            <th className="p-4">التقييم</th>
             <th className="p-4">العنوان</th>
-            <th className="p-4">المنظمة</th>
+            <th className="p-4">المشروع</th>
             <th className="p-4">الشعار</th>
             <th className="p-4">
               <button onClick={() => setTableColor((old) => !old)}>
@@ -85,9 +78,9 @@ const OrganizationsTable = ({ data }) => {
               </div>
             </td>
           </tr> */}
-          {/* {items?.map((item, index) => ( */}
-          {data.length > 0 &&
-            data.map((item, index) => (
+
+          {data?.length > 0 &&
+            data?.map((item, index) => (
               <tr
                 key={index}
                 className={`${
@@ -95,11 +88,12 @@ const OrganizationsTable = ({ data }) => {
                     ? 'bg-stone-900 bg-opacity-25 text-white w-full hover:bg-stone-800 text-sm border-t-2 border-[#21172e]'
                     : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
                 } `}
+                // className="w-full hover:bg-slate-200 bg-slate-100 text-stone-900 border-y-2 border-[#3E8AA9]"
               >
                 <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
-                      onClick={() => deletOrg(item.id)}
+                      onClick={() => handleDelete(item.id)}
                       className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                     >
                       <FaTrashCan />
@@ -119,28 +113,21 @@ const OrganizationsTable = ({ data }) => {
                 <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
-                      onClick={() => moveTo(item.id)}
+                      onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${item.id}`)}
                       className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
                     >
                       <BiDetail />
                     </button>
                   </div>
                 </td>
-                <td className="min-w-40 px-2 text-center">{item.phone}</td>
-                <td className="min-w-40 px-2 text-center">{item.email}</td>
-                <td className="min-w-40 px-2 text-center">{item.address}</td>
-                <td className="min-w-40 px-2 text-center">{item.name}</td>
-                {item.logo && (
-                  <td className="min-w-40 px-2 text-center">
-                    <div className="w-full flex justify-center py-5">
-                      <img
-                        className="w-16 rounded-xl"
-                        src={item.logo !== 'no image' ? item.logo : images.loginLogo}
-                        alt="لوغو"
-                      />
-                    </div>
-                  </td>
-                )}
+                <td className="min-w-40 px-2 text-center">{item?.rate}</td>
+                <td className="min-w-40 px-2 text-center">{item?.address}</td>
+                <td className="min-w-40 px-2 text-center">{item?.name}</td>
+                <td className="min-w-40 px-2 text-center">
+                  <div className="w-full flex justify-center py-5">
+                    <img className="w-16 rounded-xl" src={item?.logo !== "no logo" ? item?.logo : images.loginLogo} alt="لوغو" />
+                  </div>
+                </td>
                 <th className="p-4 text-center"></th>
               </tr>
             ))}
@@ -150,4 +137,4 @@ const OrganizationsTable = ({ data }) => {
   );
 };
 
-export default OrganizationsTable;
+export default ProjectsTable;

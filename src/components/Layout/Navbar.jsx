@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 // import { HiOutlineLogout } from 'react-icons/hi';
-import { images } from '../../constants/index';
+// import { images } from '../../constants/index';
 import { RxHamburgerMenu } from 'react-icons/rx';
 const Navbar = () => {
   const path = useLocation();
@@ -13,7 +13,7 @@ const Navbar = () => {
      bg-opacity-45 backdrop-blur-sm bg-[#181818]">
       <div className="w-full flex items-center justify-end md:pr-8">
         <div className="flex-1 ml-5 md:ml-12 py-2">
-          <img className="w-8 md:w-16 rounded-lg " src={images.loginLogo} alt="لوغو" />
+          {/* <img className="w-8 md:w-16 rounded-lg " src={images.loginLogo} alt="لوغو" /> */}
         </div>
         <div className="hidden md:flex">
           {/* <Link
@@ -27,15 +27,23 @@ const Navbar = () => {
           <Link
             to="/rasheed/organizations/traffics"
             className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer ${
-              path.pathname === '/rasheed/organizations/traffics' ? customPathStyle : ''
+              path.pathname.includes('/rasheed/organizations/traffics') ? customPathStyle : ''
             }`}
           >
-            الحركة
+            الزيارات
+          </Link>
+          <Link
+            to="/rasheed/organizations/suggestions"
+            className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer ${
+              path.pathname.includes('/rasheed/organizations/suggestions') ? customPathStyle : ''
+            }`}
+          >
+            المقترحات
           </Link>
           <Link
             to="/rasheed/organizations"
             className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer ${
-              path.pathname === '/rasheed/organizations' ? customPathStyle : ''
+              path.pathname.includes('/rasheed/organizations') ? customPathStyle : ''
             }`}
           >
             المنظمات
@@ -62,16 +70,25 @@ const Navbar = () => {
           onClick={() => setToggleNav((old) => !old)}
           to="/rasheed/organizations/traffics"
           className={`text-white text-sm md:text-lg mx-3 py-1 px-2 border-b-4 border-transparent cursor-pointer ${
-            path.pathname === '/rasheed/organizations/traffics' ? customPathStyle : ''
+            path.pathname.includes('/rasheed/organizations/traffics') ? customPathStyle : ''
           }`}
         >
-          الحركة
+      الزيارات
+        </Link>
+        <Link
+          onClick={() => setToggleNav((old) => !old)}
+          to="/rasheed/organizations/suggestions"
+          className={`text-white text-sm md:text-lg mx-3 py-1 px-2 border-b-4 border-transparent cursor-pointer ${
+            path.pathname.includes('/rasheed/organizations/suggestions') ? customPathStyle : ''
+          }`}
+        >
+      المقترحات
         </Link>
         <Link
           onClick={() => setToggleNav((old) => !old)}
           to="/rasheed/organizations"
           className={`text-white text-sm md:text-lg mx-3 py-1 px-2 border-b-4 border-transparent cursor-pointer ${
-            path.pathname === '/rasheed/organizations' ? customPathStyle : ''
+            path.pathname.includes('/rasheed/organizations') ? customPathStyle : ''
           }`}
         >
           المنظمات

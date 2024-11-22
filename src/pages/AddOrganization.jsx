@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import InputField from '../components/Fields/InputField';
 import CustomButton from '../components/Fields/CustomButton';
 // import { images } from '../constants';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CustomTable from '../components/Tables/CustomTable';
 import SkillsTable from '../components/Tables/SkillsTable';
 import { IoIosCloseCircle } from 'react-icons/io';
@@ -11,12 +11,20 @@ import NumbersTable from '../components/Tables/NumbersTable';
 import { FaWhatsapp, FaInstagram, FaYoutube, FaFacebookSquare } from 'react-icons/fa';
 import { LiaTelegram } from 'react-icons/lia';
 import { FaXTwitter } from 'react-icons/fa6';
+import toast from 'react-hot-toast';
+import useStore from '../zustand/useStore';
 const AddOrganization = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const { addOrganization, Organizations } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [skillsModal, setSkillsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
   const [socialsModal, setSocialsModal] = useState(false);
+  useEffect(() => {
+    if (Organizations.length > 6) {
+      toast.error('لقد وصلت الى الحد الأقصى من المنظمات لا يمكنك إضافة منظمة جديدة');
+    }
+  }, [Organizations]);
   const {
     register,
     formState: { errors },
@@ -51,22 +59,104 @@ const AddOrganization = () => {
     control,
     name: 'skills',
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = getValues();
-    // navigate('/rasheed/Organizations');
-    console.log(data);
-    console.log(watch('LogoImage'));
-    console.log(watch('Images'));
+    if (data.password !== data.password_confirmation) {
+      return toast.error('يرجى التأكد من كلمات المرور');
+    }
+    const formData = new FormData();
+    if (data?.Images) {
+      formData.append('images', [data?.Images]);
+    }
+    if (data?.LogoImage && data.LogoImage.length > 0) {
+      const logoFile = data.LogoImage[0];
+      if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
+        const formData = new FormData();
+        formData.append('logo', logoFile);
+      } else {
+        return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
+      }
+    } else {
+      return toast.error('الصورة مطلوبة');
+    }
+    const detailsAll = [{ text: data.Details_1 }, ...data.details];
+    detailsAll.forEach((details, index) => {
+      formData.append(`details[${index}][text]`, details.text);
+    });
+    const sendSkills = data.skills;
+    sendSkills.forEach((skill, index) => {
+      formData.append(`skils[${index}][text]`, skill.text);
+    });
+    formData.append('name', data.name);
+    formData.append('email', data.email);
+    formData.append('experience', data.experience);
+    formData.append('password_confirmation', data.password_confirmation);
+    formData.append('password', data.password);
+    formData.append('view', data.view);
+    formData.append('message', data.message);
+    const sendNumbers = data.numbers;
+    sendNumbers.forEach((number, index) => {
+      formData.append(`number[${index}][type]`, number.type);
+      formData.append(`number[${index}][number]`, number.number);
+    });
+    const sendImages = data.Images;
+    const imageArray = Array.isArray(sendImages) ? sendImages : Array.from(sendImages);
+    imageArray.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
+    });
+    formData.append('address', data.address);
+    formData.append('phone', data.phone);
+    const socialsAll = [
+      {
+        type: 'X',
+        url: data.X ? data.X : null,
+      },
+      {
+        type: 'facebook',
+        url: data.facebook ? data.facebook : null,
+      },
+      {
+        type: 'youtube',
+        url: data.youtube ? data.youtube : null,
+      },
+      {
+        type: 'whatsapp',
+        url: data.whatsapp ? data.whatsapp : null,
+      },
+      {
+        type: 'telegram',
+        url: data.telegram ? data.telegram : null,
+      },
+      {
+        type: 'instagram',
+        url: data.instagram ? data.instagram : null,
+      },
+      {
+        type: 'website',
+        url: data.website ? data.website : null,
+      },
+    ];
+    socialsAll.forEach((social, index) => {
+      formData.append(`socials[${index}][type]`, social.type);
+      formData.append(`socials[${index}][url]`, social.url);
+    });
+    // formData.append('socials', JSON.stringify(socialsAll));
+    try {
+      await addOrganization(formData);
+      navigate('/rasheed/organizations');
+    } catch (error) {
+      console.log(error);
+    }
   };
   const addDetails = () => {
     const data = getValues();
     data.editedId === ''
       ? append({
-          detail: data.DetailsCustom,
+          text: data.DetailsCustom,
         })
       : update(data.editedId, {
-          detail: data.DetailsCustom,
+          text: data.DetailsCustom,
         });
     setValue('DetailsCustom', '');
     setValue('editedId', '');
@@ -75,7 +165,7 @@ const AddOrganization = () => {
   const addSkills = () => {
     const data = getValues();
     appendSkills({
-      skill: data.SkillsCustom,
+      text: data.SkillsCustom,
     });
     setValue('SkillsCustom', '');
     setSkillsModal(false);
@@ -83,10 +173,10 @@ const AddOrganization = () => {
   const addNumbers = () => {
     const data = getValues();
     appendNumbers({
-      numberDetails: data.numberDetails,
+      type: data.type,
       number: data.number,
     });
-    setValue('numberDetails', '');
+    setValue('type', '');
     setValue('number', '');
     setNumbersModal(false);
   };
@@ -110,7 +200,7 @@ const AddOrganization = () => {
           <div className="flex flex-col-reverse md:flex-row  items-center justify-between ">
             <InputField
               type="number"
-              register={register('Experiences')}
+              register={register('experience')}
               headerText="سنوات الخبرة"
               placeholder="سنوات الخبرة"
               error={errors?.form}
@@ -119,7 +209,7 @@ const AddOrganization = () => {
               customStyleHeader="mr-2"
             />
             <InputField
-              register={register('OrgaName')}
+              register={register('name')}
               headerText="اسم المنظمة"
               placeholder="ادخل هنا اسم المنظمة"
               error={errors?.form}
@@ -130,7 +220,27 @@ const AddOrganization = () => {
           </div>
           <div className="flex flex-col-reverse md:flex-row items-center justify-between ">
             <InputField
-              register={register('Address')}
+              register={register('password_confirmation')}
+              headerText="تأكيد كلمة المرور"
+              placeholder="تأكيد كلمة المرور"
+              error={errors?.form}
+              isRequired={true}
+              customStyleComponent="ml-0 md:mr-2"
+              customStyleHeader="mr-2"
+            />
+            <InputField
+              register={register('password')}
+              headerText="كلمة المرور"
+              placeholder="كلمة المرور"
+              error={errors?.form}
+              isRequired={true}
+              customStyleComponent="mr-0 md:ml-2"
+              customStyleHeader="mr-2"
+            />
+          </div>
+          <div className="flex flex-col-reverse md:flex-row items-center justify-between ">
+            <InputField
+              register={register('address')}
               headerText="العنوان"
               placeholder="العنوان"
               error={errors?.form}
@@ -140,7 +250,7 @@ const AddOrganization = () => {
             />
             <InputField
               type="number"
-              register={register('Phone')}
+              register={register('phone')}
               headerText="الجوال"
               placeholder="الجوال"
               error={errors?.form}
@@ -161,7 +271,7 @@ const AddOrganization = () => {
               customStyleHeader="mr-2"
             />
             <InputField
-              register={register('Email')}
+              register={register('email')}
               headerText="البريد الإلكتروني"
               placeholder="البريد الإلكتروني"
               error={errors?.form}
@@ -184,7 +294,7 @@ const AddOrganization = () => {
               <textarea
                 required
                 className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
-                {...register('Message')}
+                {...register('message')}
                 placeholder="الارتقاء بالمجتمع المدني زراعياً واقتصادياً وعلمياً وثقافياً وإعادة الاعمار والمساهمة في تطوير الحياة الاجتماعية والارتقاء بواقع المرأة ومشاركتها في جميع المجالات وحماية ودعم الطفولة ومنع استغلالها "
               />
             </div>
@@ -193,7 +303,7 @@ const AddOrganization = () => {
               <textarea
                 required
                 className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
-                {...register('View')}
+                {...register('view')}
                 placeholder="الوصول إلى مجتمع مدني ينعم بالسلام والاستقرار والارتقاء به للتعايش مع المجتمعات الاخرى ومواكبة التطورات بشكل إيجابي وفعّال ورفع قدرات المرأة وتعزيز دورها بالمجتمع"
               />
             </div>
@@ -249,7 +359,25 @@ const AddOrganization = () => {
             >
               {watch('LogoImage') ? 'تعديل اللوغو ' : 'إضافة لوغو المنظمة'}
             </label>
-            <input {...register('LogoImage')} id="logo-image" type="file" className="hidden" />
+            {/* <input {...register('LogoImage')} id="logo-image" type="file" className="hidden" />
+             */}
+            <input
+              {...register('LogoImage', {
+                required: 'Logo is required',
+                // validate: {
+                //   acceptedFormats: (value) => {
+                //     if (value && !['image/jpeg', 'image/jpg', 'image/png', 'image/gif'].includes(value[0].type)) {
+                //       return 'The logo field must be an image of type: jpeg, jpg, png, gif.';
+                //     }
+                //     return true;
+                //   },
+                // },
+              })}
+              id="logo-image"
+              type="file"
+              className="hidden"
+            />
+            {errors.LogoImage && <p>{errors.logo.message}</p>}
             {watch('LogoImage') && watch('LogoImage').length > 0 && (
               <img
                 className="my-6 w-32 h-32"
@@ -334,7 +462,7 @@ const AddOrganization = () => {
                 </div>
                 <div className="w-full px-5">
                   <InputField
-                    register={register('numberDetails')}
+                    register={register('type')}
                     headerText="وصف الرقم"
                     placeholder="... المشاريع المكتملة، الأطفال المستفيدين"
                     error={errors?.form}

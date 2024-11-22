@@ -44,7 +44,7 @@ const NumbersTable = ({ data, remove, edit }) => {
                 </div>
               </td>
               <td className="min-w-40 px-2 text-center">{item.number}</td>
-              <td className="min-w-40 px-2 text-center">{item.numberDetails}</td>
+              <td className="min-w-40 px-2 text-center">{item.type}</td>
               <td className="p-4 text-center">{index + 1}</td>
             </tr>
           ))}

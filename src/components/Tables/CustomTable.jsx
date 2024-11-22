@@ -16,6 +16,7 @@ const CustomTable = ({ data, remove, edit }) => {
             <th className="px-2 min-w-20">الحذف</th>
             <th className="px-2 min-w-20">التعديل</th>
             <th className="p-4">الوصف</th>
+            {data[0].type && <th className="p-4">العنوان</th>}
             <th className="p-4">
               <button type="button" onClick={() => setTableColor((old) => !old)}>
                 <FaPaintBrush size={16} />
@@ -48,14 +49,15 @@ const CustomTable = ({ data, remove, edit }) => {
                 <div className="w-full flex justify-center py-2">
                   <button
                     type="button"
-                    onClick={() => edit(index, item.detail)}
+                    onClick={() => edit(index, item.text, item.type || null)}
                     className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
                   >
                     <LuClipboardEdit />
                   </button>
                 </div>
               </td>
-              <td className="min-w-40 px-2 text-center">{item.detail}</td>
+              <td className="min-w-40 px-2 text-center">{item.text}</td>
+              {item.type && <td className="min-w-40 px-2 text-center">{item.type}</td>}
               <td className="p-4 text-center">{index + 1}</td>
             </tr>
           ))}
