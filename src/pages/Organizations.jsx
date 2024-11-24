@@ -4,7 +4,7 @@ import OrganizationsTable from '../components/Tables/OrganizationsTable';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../zustand/useStore';
 const Organizations = () => {
-  const { fetchOrganizationsList, Organizations } = useStore();
+  const { fetchOrganizationsList, Organizations, isLoading } = useStore();
   const navigate = useNavigate();
   useEffect(() => {
     fetchOrganizationsList();
@@ -43,7 +43,8 @@ const Organizations = () => {
         <p className="w-full text-right text-white text-sm md:text-lg">جدول كل المنظمات</p>
       </div>
       <div className="w-full p-2">
-        <OrganizationsTable data={Organizations} />
+      { !Organizations?.length > 0  && !isLoading ? <p className="w-full text-center text-white text-sm md:text-lg">لايوجد منظمات</p>
+        :<OrganizationsTable data={Organizations} />}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../zustand/useStore';
 const OrgaDetails = () => {
   const { orgid } = useParams();
-  const { OrganizData, setOrganizData, fetchOrganizationsList, Organizations } = useStore();
+  const { OrganizData, setOrganizData, fetchOrganizationsList, Organizations, isLoading } = useStore();
   useEffect(() => {
     const fetch = async () => {
       try {
@@ -21,7 +21,7 @@ const OrgaDetails = () => {
   }, [Organizations, orgid, setOrganizData]);
   const navigate = useNavigate();
   return (
-    <div className="w-full flex flex-col items-center h-fit pt-10 md:pt-32">
+    <div className="w-full flex flex-col items-center h-[100vh] pt-10 md:pt-32">
       <div className="rounded-2xl bg-[#181818] w-[95%] md:w-[80%] bg-opacity-50 p-5 flex items-center">
         <div className="p-10 text-white">
           <BiDetail size={40} />
@@ -61,7 +61,8 @@ const OrgaDetails = () => {
         <p className="w-full text-right text-white text-sm md:text-lg">جدول كل المشاريع</p>
       </div>
       <div className="w-full p-2">
-        <ProjectsTable data={OrganizData?.projects} />
+      { !OrganizData?.projects?.length > 0  && !isLoading ? <p className="w-full text-center text-white text-sm md:text-lg">لايوجد مشاريع</p>
+        :<ProjectsTable data={OrganizData?.projects} />}
       </div>
     </div>
   );

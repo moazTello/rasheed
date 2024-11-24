@@ -3,7 +3,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import InputField from '../components/Fields/InputField';
 import CustomButton from '../components/Fields/CustomButton';
 // import { images } from '../constants';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CustomTable from '../components/Tables/CustomTable';
 import SkillsTable from '../components/Tables/SkillsTable';
 import { IoIosCloseCircle } from 'react-icons/io';
@@ -14,18 +14,19 @@ import { FaXTwitter } from 'react-icons/fa6';
 import toast from 'react-hot-toast';
 import useStore from '../zustand/useStore';
 import ImageUploader from '../components/Fields/ImageUploader';
-const AddOrganization = () => {
+const EditOrganization = () => {
   const navigate = useNavigate();
-  const { addOrganization, Organizations, isLoading } = useStore();
+  const { EditOrganization, isLoading, editedorga, fetcheditedOrga } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [skillsModal, setSkillsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
   const [socialsModal, setSocialsModal] = useState(false);
+  const { orgid } = useParams();
+
   useEffect(() => {
-    if (Organizations.length > 6) {
-      toast.error('لقد وصلت الى الحد الأقصى من المنظمات لا يمكنك إضافة منظمة جديدة');
-    }
-  }, [Organizations]);
+    fetcheditedOrga(orgid);
+  }, [fetcheditedOrga, orgid]);
+
   const {
     register,
     formState: { errors },
@@ -33,7 +34,6 @@ const AddOrganization = () => {
     getValues,
     setValue,
     control,
-    watch,
   } = useForm();
   const {
     fields: details,
@@ -60,6 +60,54 @@ const AddOrganization = () => {
     control,
     name: 'skills',
   });
+
+  useEffect(() => {
+    if (!editedorga) return;
+    const data = getValues();
+    setValue('name', editedorga?.name || '');
+    setValue('email', editedorga?.email || '');
+    setValue('address', editedorga?.address || '');
+    setValue('view', editedorga?.view || '');
+    setValue('message', editedorga?.message || '');
+    setValue('experience', editedorga?.experience || '');
+    setValue('phone', editedorga?.phone || '');
+    setValue('Details_1', editedorga?.details?.[0]?.text || '');
+    setValue('password_confirmation', null);
+    setValue('password', null);
+  
+    if (data.details.length === 0) {
+      editedorga?.details?.forEach((item, index) => {
+        if (index !== 0) {
+          append({ text: item.text });
+        }
+      });
+    }
+  
+    if (data.numbers.length === 0) {
+      editedorga?.number?.forEach((item) => {
+        appendNumbers({ type: item.type, number: item.number });
+      });
+    }
+  
+    if (data.skills.length === 0) {
+      editedorga?.skils?.forEach((item) => {
+        appendSkills({ text: item.text });
+      });
+    }
+  
+    editedorga?.socials?.forEach((item) => {
+      setValue(item.type, item.url || '');
+    });
+    // eslint-disable-next-line 
+  }, [editedorga]);
+
+
+  // const urlToFile = async (url, filename, mimeType) => {
+  //   const response = await fetch(url);
+  //   const blob = await response.blob();
+  //   return new File([blob], filename, { type: mimeType });
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = getValues();
@@ -68,21 +116,43 @@ const AddOrganization = () => {
     }
     const formData = new FormData();
     if (data?.LogoImage) {
-      const logoFile = data.LogoImage;
-      if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-        formData.append('logo', logoFile);
-      } else {
-        return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
+      let logoFile = data.LogoImage;
+      if (logoFile instanceof HTMLImageElement) {
+        formData.append("logo", []);
+      } else if (typeof logoFile === "string") {
+        formData.append("logo", []);
       }
+      if (logoFile.type?.match(/image\/(jpeg|jpg|png|gif)/)) {
+        formData.append("logo", logoFile);
+      } 
     } else {
-      return toast.error('اللوغو مطلوب');
+      return toast.error("الصورة مطلوبة");
     }
     if (data?.Images && Array.isArray(data.Images)) {
-      data.Images.forEach((file, index) => {
-        formData.append(`images[${index}]`, file);
-      });
+      try {
+        await Promise.all(
+          data.Images.map(async (image, index) => {
+            if (typeof image === "string") {
+             return 0
+            }
+            else if (image instanceof HTMLImageElement) {
+              return 0
+            }
+            else{
+              formData.append(`images[${index}]`, image);
+            }
+          })
+        );
+      } catch (error) {
+        return toast.error(error.message || "حدث خطأ أثناء معالجة الصور");
+      }
     } else {
-      return toast.error('الصور مطلوبة');
+      return toast.error("الصور مطلوبة");
+    }
+    if(data.password > 0 && data.password_confirmation){
+      console.log("passwords")
+      formData.append('password_confirmation', data.password_confirmation);
+      formData.append('password', data.password);
     }
     const detailsAll = [{ text: data.Details_1 }, ...data.details];
     detailsAll.forEach((details, index) => {
@@ -93,10 +163,9 @@ const AddOrganization = () => {
       formData.append(`skils[${index}][text]`, skill.text);
     });
     formData.append('name', data.name);
-    formData.append('email', data.email);
     formData.append('experience', data.experience);
-    formData.append('password_confirmation', data.password_confirmation);
-    formData.append('password', data.password);
+    data.password_confirmation !== null && formData.append('password_confirmation', data.password_confirmation);
+    data.password !== null && formData.append('password', data.password);
     formData.append('view', data.view);
     formData.append('message', data.message);
     const sendNumbers = data.numbers;
@@ -138,12 +207,11 @@ const AddOrganization = () => {
     ];
     socialsAll.forEach((social, index) => {
       formData.append(`socials[${index}][type]`, social.type);
-      formData.append(`socials[${index}][url]`, social.url);
+      formData.append(`socials[${index}][url]`, social.url || '');
     });
-    // formData.append('socials', JSON.stringify(socialsAll));
     try {
-      await addOrganization(formData);
-      toast.success('تم إضافة المنظمة الجديدة بنجاح');
+      await EditOrganization(formData,orgid);
+      toast.success('تم تعديل المنظمة الجديدة بنجاح');
       navigate('/rasheed/organizations');
     } catch (error) {
       console.log(error);
@@ -226,16 +294,14 @@ const AddOrganization = () => {
               headerText="تأكيد كلمة المرور"
               placeholder="تأكيد كلمة المرور"
               error={errors?.form}
-              isRequired={true}
               customStyleComponent="ml-0 md:mr-2"
               customStyleHeader="mr-2"
             />
             <InputField
               register={register('password')}
               headerText="كلمة المرور"
-              placeholder="كلمة المرور"
+              placeholder="املأ الحقل فقط اذا أردت تغييرها"
               error={errors?.form}
-              isRequired={true}
               customStyleComponent="mr-0 md:ml-2"
               customStyleHeader="mr-2"
             />
@@ -274,13 +340,13 @@ const AddOrganization = () => {
             /> */}
             <InputField
               register={register('email')}
-              headerText="البريد الإلكتروني (لايمكنك تغيير البريد لاحقاً)"
+              headerText="البريد الإلكتروني (ثابت)"
               placeholder="البريد الإلكتروني"
               error={errors?.form}
-              isRequired={true}
               customStyleComponent="ml-0"
               customStyleHeader="mr-2"
               type="email"
+              disable={true}
             />
           </div>
           <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة</p>
@@ -353,7 +419,13 @@ const AddOrganization = () => {
             </button>
             <p className="text-right pr-1 text-white text-sm md:text-lg my-4">التواصل الاجتمااعي</p>
           </div>
-         <ImageUploader register={register} watch={watch} errors={errors} setValue={setValue}/>
+          <ImageUploader
+            errors={errors}
+            setValue={setValue}
+            backendLogo={editedorga?.logo}
+            backendImages={editedorga?.images}
+          />
+
           <CustomButton type="submit" buttonText="إضافة" loading={isLoading} />
           {detailsModal && (
             <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
@@ -502,4 +574,4 @@ const AddOrganization = () => {
   );
 };
 
-export default AddOrganization;
+export default EditOrganization;

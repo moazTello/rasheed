@@ -2,8 +2,17 @@ import { create } from 'zustand';
 import { axiosPrivate } from '../api/DataTransfer';
 import DataTransfer from '../api/DataTransfer';
 const useStore = create((set) => ({
-  user: {},
-  setUser: (user) => set({ user }),
+  // user: sessionStorage.getItem('user') || null,
+  // setUser: (user) => set({ user }),
+  user: JSON.parse(sessionStorage.getItem('user')) || null,
+  setUser: (user) => {
+    sessionStorage.setItem('user', JSON.stringify(user));
+    set({ user });
+  },
+  clearUser: () => {
+    sessionStorage.removeItem('user');
+    set({ user: null });
+  },
 
   token: sessionStorage.getItem('accessT') || '',
   setToken: (token) => set({ token }),
@@ -63,6 +72,28 @@ const useStore = create((set) => ({
     }
   },
 
+  EditOrganization: async (data, id) => {
+    set({ isLoading: true, error: null });
+    for (let [key, value] of data.entries()) {
+      console.log(`${key}:`, value);
+    }
+    try {
+      const response = await DataTransfer.post(`/api/masterAdmin/updateOrg/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          _method: 'put',
+        },
+      });
+      console.log(response);
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
   addProjectMaster: async (data, id) => {
     set({ isLoading: true, error: null });
     try {
@@ -80,11 +111,28 @@ const useStore = create((set) => ({
     }
   },
 
+  addProjectOrg: async (data) => {
+    set({ isLoading: true, error: null });
+    try {
+      await DataTransfer.post(`/api/organization/createPro`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
   deleteProjectMaster: async (id, orgid) => {
     set({ isLoading: true, error: null });
     try {
       console.log(id);
-      const response = await DataTransfer.delete(`/api/organization/deletePro/${id}/${orgid}`, {
+      const response = await DataTransfer.delete(`/api/masterAdmin/deletePro/${Number(orgid)}/${Number(id)}`, {
         headers: {
           Authorization: `Bearer ${useStore.getState().token}`,
           // 'Content-Type': 'application/json',
@@ -99,11 +147,26 @@ const useStore = create((set) => ({
     }
   },
 
+  deleteProjectOrg: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      console.log(id);
+      const response = await DataTransfer.delete(`/api/organization/deletePro/${Number(id)}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+        },
+      });
+      console.log(response);
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
   deleteOrganization: async (id) => {
     set({ isLoading: true, error: null });
     try {
-      console.log(useStore.getState().token);
-      console.log(id);
       await DataTransfer.delete(`/api/masterAdmin/deleteOrg/${Number(id)}`, {
         headers: {
           Authorization: `Bearer ${useStore.getState().token}`,
@@ -129,6 +192,41 @@ const useStore = create((set) => ({
         },
       });
       set({ suggestions: response.data, isLoading: false });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  deleteSuggestion: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      await DataTransfer.delete(`/api/masterAdmin/deleteSuggest/${Number(id)}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          // Accept: 'application/json',
+        },
+      });
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  editedorga: null,
+  fetcheditedOrga: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/masterAdmin/getOrganization/${id}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ editedorga: response.data.organization, isLoading: false });
       console.log(response);
     } catch (error) {
       console.log(error);

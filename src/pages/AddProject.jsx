@@ -11,7 +11,7 @@ import useStore from '../zustand/useStore';
 const AddProject = () => {
   const navigate = useNavigate();
   const { orgid } = useParams();
-  const { addProjectMaster, Organizations, isLoading } = useStore();
+  const { addProjectMaster, Organizations, isLoading, addProjectOrg, user } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
   useEffect(() => {
@@ -61,7 +61,6 @@ const AddProject = () => {
     if (data?.LogoImage && data.LogoImage.length > 0) {
       const logoFile = data.LogoImage[0];
       if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-        const formData = new FormData();
         formData.append('logo', logoFile);
       } else {
         return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
@@ -77,8 +76,13 @@ const AddProject = () => {
     console.log(data.summary);
     const summaryAll = data.summary;
     summaryAll.forEach((details, index) => {
-      formData.append(`summary[${index}][text]`, details.text);
-      formData.append(`summary[${index}][type]`, details.type);
+      formData.append(`summaries[${index}][text]`, details.text);
+      formData.append(`summaries[${index}][type]`, details.type);
+    });
+    const sendImages = data.Images;
+    const imageArray = Array.isArray(sendImages) ? sendImages : Array.from(sendImages);
+    imageArray.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
     });
     formData.append('name', data.name);
     formData.append('address', data.address);
@@ -89,7 +93,8 @@ const AddProject = () => {
     formData.append('videoURL', data.videoURL);
     formData.append('pdfURL', data.Pdffile[0]);
     try {
-      await addProjectMaster(formData, orgid);
+      user?.role === 'Master' ? await addProjectMaster(formData, orgid) : await addProjectOrg(formData);
+      toast.success('تم إضافة مشروع جديد بنجاح');
       navigate(`/rasheed/organizations/${orgid}`);
     } catch (error) {
       console.log(error);
@@ -299,10 +304,33 @@ const AddProject = () => {
               className="hidden"
             />
             {errors.Pdffile && <p className="text-red-500">{errors.Pdffile.message}</p>}
-
             {pdfUrl && <iframe src={pdfUrl} className="my-6 w-full h-96 border rounded-lg" title="PDF Viewer" />}
           </div>
+
+          <div className="w-full flex flex-col justify-center items-center mb-4">
+            <label
+              htmlFor="images"
+              className="w-full py-4 rounded-lg text-xs md:text-sm hover:bg-white hover:text-primary text-center text-white bg-primary cursor-pointer"
+            >
+              إضافة صور
+            </label>
+            <input {...register('Images')} id="images" multiple type="file" className="hidden" />
+            {watch('Images') && watch('Images').length > 0 && (
+              <div className="flex flex-wrap gap-4 my-4">
+                {Array.from(watch('Images')).map((file, index) => (
+                  <img
+                    key={index}
+                    src={URL.createObjectURL(file)}
+                    alt={`image-${index}`}
+                    className="w-64 h-32 object-cover rounded-lg"
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
           <CustomButton type="submit" buttonText="إضافة" loading={isLoading} />
+
           {detailsModal && (
             <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
               <div className="fixed top-[25%] left-4 md:left-[25%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[90%] md:w-[50%] rounded-lg">

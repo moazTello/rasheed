@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = process.env.REACT_APP_BASE_URL
+const BASE_URL = process.env.REACT_APP_BASE_URL || "https://org.yaseralsamsam.com/"
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {

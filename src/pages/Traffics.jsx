@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
-import ReferralTracking from "../components/Fields/StatisticsCircle";
+// import ReferralTracking from "../components/Fields/StatisticsCircle";
 
 const Traffics = () => {
   const chartRef = useRef(null);

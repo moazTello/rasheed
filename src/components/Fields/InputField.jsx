@@ -11,7 +11,8 @@ const InputField = ({
   customStyleComponent,
   register,
   isRequired,
-  type
+  type,
+  disable
 }) => {
   return (
     <div className={`w-full flex flex-col justify-center items-end my-4 ${customStyleComponent}`}>
@@ -20,7 +21,7 @@ const InputField = ({
           {isRequired && <span className="text-red-500"> * </span>} {headerText} 
         </p>
       )}
-      <input type={type && type} required={isRequired} placeholder={placeholder} className={`text-sm md:text-lg text-right p-1 w-full mt-2 outline-none rounded-lg text-white bg-[#181818] bg-opacity-80 pr-3 ${customStyleInput}`} {...register} />
+      <input type={type && type} disabled={disable} required={isRequired} placeholder={placeholder} className={`text-sm md:text-lg text-right p-1 w-full mt-2 outline-none rounded-lg text-white bg-[#181818] bg-opacity-80 pr-3 ${customStyleInput}`} {...register} />
       {error && <p className='text-sm text-red-500'>{error} error</p>}
     </div>
   );
