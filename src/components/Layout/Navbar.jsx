@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { BsPersonFillGear } from 'react-icons/bs';
 // import { images } from '../../constants/index';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import useStore from '../../zustand/useStore';
 const Navbar = () => {
-  const { user } = useStore();
+  const { user, logoutMaster, logoutOrg } = useStore();
+  const navigate = useNavigate();
   const path = useLocation();
   const customPathStyle = 'border-white';
   const [toggleNav, setToggleNav] = useState(false);
+  const logout = async () => {
+    user.role === 'Master' ? await logoutMaster() : await logoutOrg();
+    sessionStorage.setItem('accessT', null);
+    sessionStorage.setItem('user', null);
+    navigate('/rasheed');
+  };
   return (
     <div
       className="fixed z-50 w-full md:w-[80%] flex flex-col items-center 
@@ -52,6 +59,14 @@ const Navbar = () => {
                 الزيارات
               </Link>
               <Link
+                to="/rasheed/organizations/problems"
+                className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
+                  path.pathname.includes('/rasheed/organizations/problems') ? customPathStyle : ''
+                }`}
+              >
+                الشكاوي
+              </Link>
+              <Link
                 to="/rasheed/organizations/suggestions"
                 className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
                   path.pathname.includes('/rasheed/organizations/suggestions') ? customPathStyle : ''
@@ -70,7 +85,7 @@ const Navbar = () => {
             </>
           )}
 
-          <button className={`text-white text-3xl ml-5 py-3  cursor-pointer hover:text-green-500`}>
+          <button onClick={logout} className={`text-white text-3xl ml-5 py-3  cursor-pointer hover:text-green-500`}>
             <HiOutlineLogout />
           </button>
         </div>
@@ -104,6 +119,15 @@ const Navbar = () => {
             </Link>
             <Link
               onClick={() => setToggleNav((old) => !old)}
+              to="/rasheed/organizations/problems"
+              className={`text-white text-sm md:text-lg mx-3 my-2 py-1 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
+                path.pathname.includes('/rasheed/organizations/problems') ? customPathStyle : ''
+              }`}
+            >
+              الشكاوي
+            </Link>
+            <Link
+              onClick={() => setToggleNav((old) => !old)}
               to="/rasheed/organizations/suggestions"
               className={`text-white text-sm md:text-lg mx-3 my-2 py-1 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
                 path.pathname.includes('/rasheed/organizations/suggestions') ? customPathStyle : ''
@@ -132,7 +156,7 @@ const Navbar = () => {
           </>
         )}
         <button
-          onClick={() => setToggleNav((old) => !old)}
+          onClick={logout}
           className={`text-white text-sm md:text-lg mx-3 my-2 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500`}
         >
           تسجيل الخروج

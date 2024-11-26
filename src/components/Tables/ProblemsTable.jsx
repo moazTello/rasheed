@@ -3,22 +3,23 @@ import { FaPaintBrush } from 'react-icons/fa';
 import { useState } from 'react';
 import useStore from '../../zustand/useStore';
 import toast from 'react-hot-toast';
-const SuggestionsTable = ({ data }) => {
-  const { deleteSuggestion, fetchSuggestionsList, isLoading } = useStore();
+const ProblemsTable = ({ data }) => {
+  const { deleteProblem, fetchProblemsList, isLoading } = useStore();
   const [tableColor, setTableColor] = useState(true);
-  const deletSuggestion = async (id) => {
+  const handleDeleteProblem = async (id) => {
     // eslint-disable-next-line no-restricted-globals
-    var result = confirm('هل أنت متأكد من حذف الاقتراح ؟');
+    var result = confirm('هل أنت متأكد من حذف الشكوى ؟');
     if (!result) return;
     try {
-      await deleteSuggestion(id);
-      await fetchSuggestionsList();
-      toast.success('تم حذف الاقتراح بنجاح');
+      await deleteProblem(id);
+      await fetchProblemsList();
+      toast.success('تم حذف الشكوى بنجاح');
     } catch (error) {
       console.log(error);
       toast.error('حدث خطأ ما');
     }
   };
+  console.log(data);
   return (
     <div className="overflow-auto rounded-lg h-fit max-h-[70vh] no-scrollbar">
       <table className="table w-full">
@@ -31,11 +32,18 @@ const SuggestionsTable = ({ data }) => {
             } `}
           >
             <th className="px-2 min-w-20">الحذف</th>
-            <th className="p-4">الاقتراح</th>
+            <th className="p-4">الشكوى</th>
+            <th className="p-4">نوع الشكوى</th>
+            <th className="p-4">هل قدمت هذه الشكوى من قبل ؟</th>
+            <th className="p-4">تاريخ وقوع المشكلة</th>
+            <th className="p-4">مستفيد من المشروع</th>
             <th className="p-4">الجوال</th>
             <th className="p-4">العنوان</th>
             <th className="p-4">البريد</th>
             <th className="p-4">الاسم</th>
+            <th className="p-4">تاريخ الشكوى</th>
+            <th className="p-4">المشروع</th>
+            <th className="p-4">المنظمة</th>
             <th className="p-4">
               <button onClick={() => setTableColor((old) => !old)}>
                 <FaPaintBrush size={16} />
@@ -52,7 +60,7 @@ const SuggestionsTable = ({ data }) => {
                   : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
               } `}
             >
-              <td colSpan="10">
+              <td colSpan="14">
                 <div className="flex justify-center my-3 w-full" role="status">
                   <svg
                     aria-hidden="true"
@@ -86,18 +94,32 @@ const SuggestionsTable = ({ data }) => {
                 <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
-                      onClick={() => deletSuggestion(item.id)}
+                      onClick={() => handleDeleteProblem(item.id)}
                       className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                     >
                       <FaTrashCan />
                     </button>
                   </div>
                 </td>
-                <td className="min-w-40 px-2 text-center py-4">{item.text}</td>
+                <td className="min-w-40 px-2 text-center my-4">{item.text}</td>
+                <td className="min-w-40 px-2 text-center my-4">
+                  {item?.typeProblem?.map((item, index) => (
+                    <span>item</span>
+                  ))}
+                </td>
+                <td className="min-w-40 px-2 text-center my-4">{item.isPrevious}</td>
+                <td className="min-w-40 px-2 text-center my-4">{item.date}</td>
+                <td className="min-w-40 px-2 text-center my-4">{item.benifit}</td>
+
                 <td className="min-w-40 px-2 text-center">{item.phone}</td>
                 <td className="min-w-40 px-2 text-center">{item.address}</td>
                 <td className="min-w-40 px-2 text-center">{item.email}</td>
                 <td className="min-w-40 px-2 text-center">{item.fullName}</td>
+
+                <td className="min-w-40 px-2 text-center">{item.problemDate}</td>
+                <td className="min-w-40 px-2 text-center">{item.project_name}</td>
+                <td className="min-w-40 px-2 text-center">{item.organization_name}</td>
+
                 <th className="p-4 text-center"></th>
               </tr>
             ))
@@ -108,4 +130,4 @@ const SuggestionsTable = ({ data }) => {
   );
 };
 
-export default SuggestionsTable;
+export default ProblemsTable;

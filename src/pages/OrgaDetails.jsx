@@ -5,20 +5,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../zustand/useStore';
 const OrgaDetails = () => {
   const { orgid } = useParams();
-  const { OrganizData, setOrganizData, fetchOrganizationsList, Organizations, isLoading } = useStore();
+  const { OrganizData, setOrganizData, fetchOrganizationsList, Organizations, isLoading, user } = useStore();
   useEffect(() => {
     const fetch = async () => {
       try {
-        await fetchOrganizationsList();
+        user.role === 'Master' && (await fetchOrganizationsList());
       } catch (error) {
         console.log(error);
       }
     };
     fetch();
-  }, [fetchOrganizationsList]);
+  }, [fetchOrganizationsList, user]);
   useEffect(() => {
-    setOrganizData(Organizations.find((item) => item.id === Number(orgid)));
-  }, [Organizations, orgid, setOrganizData]);
+    user.role === 'Master' && setOrganizData(Organizations.find((item) => item.id === Number(orgid)));
+  }, [Organizations, orgid, setOrganizData, user]);
   const navigate = useNavigate();
   return (
     <div className="w-full flex flex-col items-center h-[100vh] pt-10 md:pt-32">
@@ -61,8 +61,11 @@ const OrgaDetails = () => {
         <p className="w-full text-right text-white text-sm md:text-lg">جدول كل المشاريع</p>
       </div>
       <div className="w-full p-2">
-      { !OrganizData?.projects?.length > 0  && !isLoading ? <p className="w-full text-center text-white text-sm md:text-lg">لايوجد مشاريع</p>
-        :<ProjectsTable data={OrganizData?.projects} />}
+        {!OrganizData?.projects?.length > 0 && !isLoading ? (
+          <p className="w-full text-center text-white text-sm md:text-lg">لايوجد مشاريع</p>
+        ) : (
+          <ProjectsTable data={OrganizData?.projects} />
+        )}
       </div>
     </div>
   );

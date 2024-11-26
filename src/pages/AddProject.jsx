@@ -8,6 +8,7 @@ import CustomTable from '../components/Tables/CustomTable';
 import { IoIosCloseCircle } from 'react-icons/io';
 import toast from 'react-hot-toast';
 import useStore from '../zustand/useStore';
+import ImageUploaderActivity from '../components/Fields/ImageUploaderActivity';
 const AddProject = () => {
   const navigate = useNavigate();
   const { orgid } = useParams();
@@ -47,11 +48,19 @@ const AddProject = () => {
     name: 'activities',
   });
   const [pdfUrl, setPdfUrl] = useState(null);
+  const [pdfUrlActivity, setPdfUrlActivity] = useState(null);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setPdfUrl(URL.createObjectURL(file));
+    }
+  };
+  const handleFileChangeActivity = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setPdfUrlActivity(URL.createObjectURL(file));
+      setValue('pdfTest', file);
     }
   };
   const handleSubmit = async (e) => {
@@ -70,10 +79,16 @@ const AddProject = () => {
     }
     const activitiesAll = data.activities;
     activitiesAll.forEach((details, index) => {
-      formData.append(`activities[${index}][text]`, details.text);
-      formData.append(`activities[${index}][type]`, details.type);
+      formData.append(`activities[${index}][text]`, details?.text);
+      formData.append(`activities[${index}][type]`, details?.type);
+      formData.append(`activities[${index}][videoUrl]`, details?.videoUrl);
+      formData.append(`activities[${index}][videoImg]`, details?.videoImg);
+      details?.pdf && formData.append(`activities[${index}][pdf]`, data.Pdffile[0]);
+      details?.images.length > 0 &&
+        details?.images?.forEach((det, sec) => {
+          formData.append(`activities[${index}][images][${sec}]`, det);
+        });
     });
-    console.log(data.summary);
     const summaryAll = data.summary;
     summaryAll.forEach((details, index) => {
       formData.append(`summaries[${index}][text]`, details.text);
@@ -91,7 +106,8 @@ const AddProject = () => {
     formData.append('benefitDir', data.benefitDir);
     formData.append('benefitUnd', data.benefitUnd);
     formData.append('videoURL', data.videoURL);
-    formData.append('pdfURL', data.Pdffile[0]);
+    data.Pdffile.length > 0 && formData.append('pdfURL', data.Pdffile[0]);
+    console.log(data);
     try {
       user?.role === 'Master' ? await addProjectMaster(formData, orgid) : await addProjectOrg(formData);
       toast.success('تم إضافة مشروع جديد بنجاح');
@@ -129,14 +145,30 @@ const AddProject = () => {
       ? appendActivity({
           text: data.number,
           type: data.type,
+          videoUrl: data.activity_video,
+          pdf: data.activity_pdf,
+          videoImg: data.activity_video_image,
+          images: data.ImagesActivity,
+          pdfTest: data.pdfTest,
         })
       : updateActivity(data.numberId, {
           text: data.number,
           type: data.type,
+          videoUrl: data.activity_video,
+          pdf: data.activity_pdf,
+          videoImg: data.activity_video_image,
+          images: data.ImagesActivity,
+          pdfTest: data.pdfTest,
         });
     setValue('type', '');
     setValue('number', '');
+    setValue('activity_video', '');
     setValue('numberId', '');
+    setValue('activity_pdf', '');
+    setValue('activity_video_image', '');
+    setValue('ImagesActivity', '');
+    setValue('pdfTest', '');
+    setPdfUrlActivity(null);
     setNumbersModal(false);
   };
   const editDetail = (id, detail, desc) => {
@@ -145,10 +177,16 @@ const AddProject = () => {
     setValue('editedId', id);
     setDetailsModal(true);
   };
-  const editActivity = (id, detail, desc) => {
+  const editActivity = (id, detail, desc, videoUrl, pdf, videoImg, images, pdfTest) => {
     setValue('type', desc);
     setValue('number', detail);
     setValue('numberId', id);
+    setValue('activity_video', videoUrl);
+    setValue('activity_pdf', pdf);
+    setValue('activity_video_image', videoImg);
+    setValue('ImagesActivity', images);
+    setValue('pdfTest', pdfTest);
+    pdfTest ? setPdfUrlActivity(URL.createObjectURL(pdfTest)) : setPdfUrlActivity(null);
     setNumbersModal(true);
   };
   const addDetailModal = () => {
@@ -157,6 +195,14 @@ const AddProject = () => {
   };
   const addActivityModal = () => {
     setValue('numberId', '');
+    setValue('type', '');
+    setValue('number', '');
+    setValue('activity_video', '');
+    setValue('activity_pdf', '');
+    setValue('activity_video_image', '');
+    setValue('ImagesActivity', '');
+    setValue('pdfTest', '');
+    setPdfUrlActivity(null);
     setNumbersModal(true);
   };
   return (
@@ -260,6 +306,67 @@ const AddProject = () => {
             </button>
             <p className="text-right pr-1 text-white text-sm md:text-lg my-4">نشاطات المشروع</p>
           </div>
+          {numbersModal && (
+            <div className="top-0 left-0 bg-[#363333] rounded-lg w-full mb-5 h-full bg-opacity-90 p-5">
+              <div className="top-[10%] left-4 md:left-[5%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[100%] md:w-[100%] rounded-lg">
+                <div className="w-full flex justify-between p-5">
+                  <button type="button" onClick={() => setNumbersModal(false)} className="text-white hover:text-black">
+                    <IoIosCloseCircle size={28} />
+                  </button>
+                  <p className="text-right text-sm md:text-lg text-white font-bold">إضافة نشاط</p>
+                </div>
+                <div className="w-full px-5">
+                  <InputField
+                    register={register('type')}
+                    headerText="عنوان النشاط"
+                    placeholder="... تمارين بناء الثقة"
+                    error={errors?.form}
+                    isRequired={true}
+                  />
+                  <textarea
+                    className="w-full outline-none min-h-60 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
+                    {...register('number')}
+                    placeholder="... قام فريق عمل المشروع خلال شهر نوفمبر على تنفيذ ورشة عمل النهج"
+                  />
+                  <InputField
+                    register={register('activity_video')}
+                    headerText="رابط فيديو النشاط"
+                    placeholder=""
+                    error={errors?.form}
+                  />
+                  <ImageUploaderActivity
+                    setValue={setValue}
+                    errors={errors}
+                    backendLogo=""
+                    backendImages=""
+                    getValues={getValues}
+                  />
+                  <div className="w-full flex flex-col justify-center items-center my-4">
+                    <label
+                      htmlFor="pdf-file-activity"
+                      className="w-full py-4 rounded-lg text-xs md:text-sm hover:bg-white hover:text-primary text-center text-white bg-primary cursor-pointer"
+                    >
+                      {'إضافة ملف للنشاط'}
+                    </label>
+                    <input
+                      {...register('activity_pdf', {
+                        onChange: handleFileChangeActivity,
+                      })}
+                      id="pdf-file-activity"
+                      type="file"
+                      accept="application/pdf"
+                      className="hidden"
+                    />
+                    {errors.Pdffile && <p className="text-red-500">{errors.Pdffile.message}</p>}
+                    {pdfUrlActivity && (
+                      <iframe src={pdfUrlActivity} className="my-6 w-full h-96 border rounded-lg" title="PDF Viewer" />
+                    )}
+                  </div>
+                  <CustomButton buttonText="إضافة نشاط" type="button" onClick={addNumbers} />
+                </div>
+              </div>
+            </div>
+          )}
           {activities.length > 0 && <CustomTable data={activities} remove={removeActivity} edit={editActivity} />}
           <div className="w-full flex flex-col justify-center items-center my-4">
             <label
@@ -295,7 +402,6 @@ const AddProject = () => {
             </label>
             <input
               {...register('Pdffile', {
-                required: 'PDF file is required',
                 onChange: handleFileChange,
               })}
               id="pdf-file"
@@ -354,33 +460,6 @@ const AddProject = () => {
                     placeholder="... زيادة التماسك الاجتماعي في ناحية"
                   />
                   <CustomButton buttonText="إضافة" type="button" onClick={addDetails} />
-                </div>
-              </div>
-            </div>
-          )}
-          {numbersModal && (
-            <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">
-              <div className="fixed top-[25%] left-4 md:left-[25%] bg-gradient-to-r via-indigo-500 from-indigo-400 to-indigo-600 w-[90%] md:w-[50%] rounded-lg">
-                <div className="w-full flex justify-between p-5">
-                  <button type="button" onClick={() => setNumbersModal(false)} className="text-white hover:text-black">
-                    <IoIosCloseCircle size={28} />
-                  </button>
-                  <p className="text-right text-sm md:text-lg text-white font-bold">إضافة نشاط</p>
-                </div>
-                <div className="w-full px-5">
-                  <InputField
-                    register={register('type')}
-                    headerText="عنوان النشاط"
-                    placeholder="... تمارين بناء الثقة"
-                    error={errors?.form}
-                    isRequired={true}
-                  />
-                  <textarea
-                    className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
-                    {...register('number')}
-                    placeholder="... قام فريق عمل المشروع خلال شهر نوفمبر على تنفيذ ورشة عمل النهج"
-                  />
-                  <CustomButton buttonText="إضافة" type="button" onClick={addNumbers} />
                 </div>
               </div>
             </div>

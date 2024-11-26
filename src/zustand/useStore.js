@@ -14,6 +14,13 @@ const useStore = create((set) => ({
     set({ user: null });
   },
 
+  OrganizData: JSON.parse(sessionStorage.getItem('organization')) || [],
+  setOrganizData: (OrganizData) => {
+    JSON.parse(sessionStorage.getItem('user')).role === 'OrgAdmin' &&
+      sessionStorage.setItem('organization', JSON.stringify(OrganizData));
+    set({ OrganizData });
+  },
+
   token: sessionStorage.getItem('accessT') || '',
   setToken: (token) => set({ token }),
 
@@ -37,17 +44,76 @@ const useStore = create((set) => ({
     }
   },
 
-  OrganizData: [],
-  setOrganizData: (OrganizData) => set({ OrganizData }),
+  logoutMaster: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await axiosPrivate.get('/api/masterAdmin/logout', {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+        },
+      });
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  logoutOrg: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      await axiosPrivate.get('/api/organization/logout', {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+        },
+      });
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
 
   Organizations: [],
   setOrganizations: (Organizations) => set({ Organizations }),
+  // fetchOrganizationsList: async () => {
+  //   set({ isLoading: true, error: null });
+  //   try {
+  //     const response = await axiosPrivate.get('/api/client/getOrganizations');
+  //     set({ Organizations: response.data, isLoading: false });
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //     set({ error: error.message, isLoading: false });
+  //   }
+  // },
+
   fetchOrganizationsList: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await axiosPrivate.get('/api/client/getOrganizations');
-      set({ Organizations: response.data, isLoading: false });
+      const response = await axiosPrivate.get('api/masterAdmin/getOrganizations?page=1&per_page=1', {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+        },
+      });
+      set({ Organizations: response.data.organizations, isLoading: false });
       console.log(response);
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  fetchProgectOrg: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await axiosPrivate.get('/api/organization/getProjects?page=1&per_page=10', {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+        },
+      });
+      set({ isLoading: false });
+      return response.data;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
@@ -97,13 +163,14 @@ const useStore = create((set) => ({
   addProjectMaster: async (data, id) => {
     set({ isLoading: true, error: null });
     try {
-      await DataTransfer.post(`/api/masterAdmin/createPro/${id}`, data, {
+      const response = await DataTransfer.post(`/api/masterAdmin/createPro/${id}`, data, {
         headers: {
           Authorization: `Bearer ${useStore.getState().token}`,
           // 'Content-Type': 'application/json',
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log(response);
       set({ isLoading: false });
     } catch (error) {
       console.log(error);
@@ -114,13 +181,14 @@ const useStore = create((set) => ({
   addProjectOrg: async (data) => {
     set({ isLoading: true, error: null });
     try {
-      await DataTransfer.post(`/api/organization/createPro`, data, {
+      const response = await DataTransfer.post(`/api/organization/createPro`, data, {
         headers: {
           Authorization: `Bearer ${useStore.getState().token}`,
           // 'Content-Type': 'application/json',
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.timeLog(response);
       set({ isLoading: false });
     } catch (error) {
       console.log(error);
@@ -203,6 +271,41 @@ const useStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       await DataTransfer.delete(`/api/masterAdmin/deleteSuggest/${Number(id)}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          // Accept: 'application/json',
+        },
+      });
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  problems: [],
+  fetchProblemsList: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get('/api/masterAdmin/getProblems?page=1&per_page=50', {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ problems: response.data, isLoading: false });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  deleteProblem: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      await DataTransfer.delete(`/api/masterAdmin/deleteProblem/${Number(id)}`, {
         headers: {
           Authorization: `Bearer ${useStore.getState().token}`,
           // 'Content-Type': 'application/json',

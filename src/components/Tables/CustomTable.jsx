@@ -49,7 +49,18 @@ const CustomTable = ({ data, remove, edit }) => {
                 <div className="w-full flex justify-center py-2">
                   <button
                     type="button"
-                    onClick={() => edit(index, item.text, item.type || null)}
+                    onClick={() =>
+                      edit(
+                        index,
+                        item.text,
+                        item.type,
+                        item?.videoUrl,
+                        item?.pdf,
+                        item?.videoImg,
+                        item?.images,
+                        item?.pdfTest || null,
+                      )
+                    }
                     className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
                   >
                     <LuClipboardEdit />

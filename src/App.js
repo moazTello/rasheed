@@ -15,6 +15,7 @@ import EditOrganization from './pages/EditOrganization';
 import Profile from './pages/Profile';
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from './pages/protectedRoutes/PrivateRoute';
+import Problems from './pages/Problems';
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
             element={
               <PrivateRoute allowedRoles={['Master']}>
                 <Suggestions />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="problems"
+            element={
+              <PrivateRoute allowedRoles={['Master']}>
+                <Problems />
               </PrivateRoute>
             }
           />

@@ -9,7 +9,7 @@ import { axiosPrivate } from '../api/DataTransfer';
 import toast from 'react-hot-toast';
 
 const Login = () => {
-  const { setToken, setUser } = useStore();
+  const { setToken, setUser, setOrganizData } = useStore();
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState(false);
   const navigate = useNavigate();
@@ -36,11 +36,13 @@ const Login = () => {
       const user = {
         email: response?.data?.response?.email,
         name: response?.data?.response?.name,
-        role:type ? 'Master' : 'OrgAdmin'
+        role: type ? 'Master' : 'OrgAdmin',
       };
       setUser(user);
       sessionStorage.setItem('accessT', response.data.token);
       sessionStorage.setItem('user', JSON.stringify(user));
+      sessionStorage.setItem('organization', JSON.stringify(response?.data?.response));
+      setOrganizData(response?.data?.response);
       console.log(response);
       setLoading(false);
       if (type) {
