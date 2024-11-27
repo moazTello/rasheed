@@ -21,7 +21,7 @@ const OrgaDetails = () => {
   }, [Organizations, orgid, setOrganizData, user]);
   const navigate = useNavigate();
   return (
-    <div className="w-full flex flex-col items-center h-[100vh] pt-10 md:pt-32">
+    <div className="w-full flex flex-col items-center min-h-[100vh] h-fit pt-10 md:pt-32">
       <div className="rounded-2xl bg-[#181818] w-[95%] md:w-[80%] bg-opacity-50 p-5 flex items-center">
         <div className="p-10 text-white">
           <BiDetail size={40} />

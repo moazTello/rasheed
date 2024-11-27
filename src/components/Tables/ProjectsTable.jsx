@@ -107,7 +107,7 @@ const ProjectsTable = ({ data }) => {
                 <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
-                      // onClick={() => setUpdateBox(item.id)}
+                      onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${item.id}/editProject`)}
                       className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
                     >
                       <LuClipboardEdit />

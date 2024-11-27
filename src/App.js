@@ -16,6 +16,7 @@ import Profile from './pages/Profile';
 import { Toaster } from 'react-hot-toast';
 import PrivateRoute from './pages/protectedRoutes/PrivateRoute';
 import Problems from './pages/Problems';
+import EditProject from './pages/EditProject';
 
 function App() {
   return (
@@ -109,6 +110,22 @@ function App() {
               element={
                 <PrivateRoute allowedRoles={['OrgAdmin', 'Master']}>
                   <ProjectDetails />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="projectdetails/:projid/editProject"
+              element={
+                <PrivateRoute allowedRoles={['OrgAdmin', 'Master']}>
+                  <EditProject />
+                </PrivateRoute>
+              }
+            />
+              <Route
+              path="projectdetails/:projid/suggestions"
+              element={
+                <PrivateRoute allowedRoles={['OrgAdmin', 'Master']}>
+                  <Suggestions />
                 </PrivateRoute>
               }
             />

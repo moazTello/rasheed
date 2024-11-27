@@ -172,6 +172,7 @@ const useStore = create((set) => ({
       });
       console.log(response);
       set({ isLoading: false });
+      return response;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
@@ -188,14 +189,51 @@ const useStore = create((set) => ({
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.timeLog(response);
       set({ isLoading: false });
+      return response;
     } catch (error) {
       console.log(error);
       set({ error: error.message, isLoading: false });
     }
   },
 
+
+  addActivityMaster: async (data, id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.post(`/api/masterAdmin/createActivity/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  addActivityOrg: async (data, id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.post(`/api/organization/createActivity/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+  
   deleteProjectMaster: async (id, orgid) => {
     set({ isLoading: true, error: null });
     try {
@@ -336,6 +374,25 @@ const useStore = create((set) => ({
       set({ error: error.message, isLoading: false });
     }
   },
+
+  editedProject: null,
+  fetcheditedProjectMaster: async (orgid,projid) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/masterAdmin/getProject/${orgid}/${projid}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ editedProject: response.data.project, isLoading: false });
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
 }));
 
 export default useStore;

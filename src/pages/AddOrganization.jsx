@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import InputField from '../components/Fields/InputField';
 import CustomButton from '../components/Fields/CustomButton';
+import imageCompression from 'browser-image-compression';
 // import { images } from '../constants';
 import { useNavigate } from 'react-router-dom';
 import CustomTable from '../components/Tables/CustomTable';
@@ -16,7 +17,7 @@ import useStore from '../zustand/useStore';
 import ImageUploader from '../components/Fields/ImageUploader';
 const AddOrganization = () => {
   const navigate = useNavigate();
-  const { addOrganization, Organizations, isLoading } = useStore();
+  const { addOrganization, Organizations, isLoading, setLoading } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [skillsModal, setSkillsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
@@ -62,15 +63,46 @@ const AddOrganization = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const compressionOptions = {
+      maxSizeMB: 0.4,
+      maxWidthOrHeight: 600,
+      useWebWorker: true,
+    };
+    setLoading(true);
     const data = getValues();
     if (data.password !== data.password_confirmation) {
       return toast.error('يرجى التأكد من كلمات المرور');
     }
     const formData = new FormData();
+
+    // if (data?.LogoImage) {
+    //   const logoFile = data.LogoImage;
+    //   if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
+    //     formData.append('logo', logoFile);
+    //   } else {
+    //     return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
+    //   }
+    // } else {
+    //   return toast.error('اللوغو مطلوب');
+    // }
+    // if (data?.Images && Array.isArray(data.Images)) {
+    //   data.Images.forEach((file, index) => {
+    //     formData.append(`images[${index}]`, file);
+    //   });
+    // } else {
+    //   return toast.error('الصور مطلوبة');
+    // }
+
     if (data?.LogoImage) {
       const logoFile = data.LogoImage;
       if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-        formData.append('logo', logoFile);
+        if (logoFile.size > 400 * 1024) {
+          toast.success('يتم الآن ضغط الصور');
+          const compressedLogo = await imageCompression(logoFile, compressionOptions);
+          formData.append('logo', compressedLogo);
+        } else {
+          formData.append('logo', logoFile);
+        }
       } else {
         return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
       }
@@ -78,12 +110,19 @@ const AddOrganization = () => {
       return toast.error('اللوغو مطلوب');
     }
     if (data?.Images && Array.isArray(data.Images)) {
-      data.Images.forEach((file, index) => {
-        formData.append(`images[${index}]`, file);
-      });
+      for (let i = 0; i < data.Images.length; i++) {
+        const file = data.Images[i];
+        if (file.size > 400 * 1024) {
+          const compressedImage = await imageCompression(file, compressionOptions);
+          formData.append(`images[${i}]`, compressedImage);
+        } else {
+          formData.append(`images[${i}]`, file);
+        }
+      }
     } else {
       return toast.error('الصور مطلوبة');
     }
+
     const detailsAll = [{ text: data.Details_1 }, ...data.details];
     detailsAll.forEach((details, index) => {
       formData.append(`details[${index}][text]`, details.text);
@@ -140,13 +179,13 @@ const AddOrganization = () => {
       formData.append(`socials[${index}][type]`, social.type);
       formData.append(`socials[${index}][url]`, social.url);
     });
-    // formData.append('socials', JSON.stringify(socialsAll));
     try {
       await addOrganization(formData);
       toast.success('تم إضافة المنظمة الجديدة بنجاح');
       navigate('/rasheed/organizations');
     } catch (error) {
       console.log(error);
+      setLoading(false);
       toast.error('حدث خطأ ما');
     }
   };
@@ -353,7 +392,7 @@ const AddOrganization = () => {
             </button>
             <p className="text-right pr-1 text-white text-sm md:text-lg my-4">التواصل الاجتمااعي</p>
           </div>
-         <ImageUploader register={register} watch={watch} errors={errors} setValue={setValue}/>
+          <ImageUploader register={register} watch={watch} errors={errors} setValue={setValue} />
           <CustomButton type="submit" buttonText="إضافة" loading={isLoading} />
           {detailsModal && (
             <div className="fixed top-0 left-0 bg-[#181818] w-full h-full bg-opacity-90">

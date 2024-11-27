@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import InputField from '../components/Fields/InputField';
 import CustomButton from '../components/Fields/CustomButton';
@@ -9,15 +9,25 @@ import { IoIosCloseCircle } from 'react-icons/io';
 import toast from 'react-hot-toast';
 import useStore from '../zustand/useStore';
 import ImageUploaderActivity from '../components/Fields/ImageUploaderActivity';
-import imageCompression from 'browser-image-compression';
-
-const AddProject = () => {
+const EditProject = () => {
   const navigate = useNavigate();
-  const { orgid } = useParams();
-  const { addProjectMaster, isLoading, addProjectOrg, user, addActivityMaster, addActivityOrg, setLoading } =
-    useStore();
+  const { orgid, projid } = useParams();
+  const {
+    addProjectMaster,
+    isLoading,
+    addProjectOrg,
+    user,
+    addActivityMaster,
+    addActivityOrg,
+    editedProject,
+    fetcheditedProjectMaster,
+  } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
+
+  useEffect(() => {
+    fetcheditedProjectMaster(orgid, projid);
+  }, [fetcheditedProjectMaster, orgid, projid]);
   const {
     register,
     formState: { errors },
@@ -48,6 +58,41 @@ const AddProject = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [pdfUrlActivity, setPdfUrlActivity] = useState(null);
 
+  useEffect(() => {
+    console.log(editedProject)
+    if (!editedProject) return;
+    const data = getValues();
+    setValue('name', editedProject?.name || '');
+    setValue('address', editedProject?.address || '');
+    setValue('start_At', editedProject?.start_At || '');
+    setValue('end_At', editedProject?.end_At || '');
+    setValue('benefitDir', editedProject?.benefitDir || '');
+    setValue('benefitUnd', editedProject?.benefitUnd || '');
+    setValue('videoURL', editedProject?.videoURL || '');
+
+    if (data?.summary?.length === 0) {
+      editedProject?.summary?.forEach((item, index) => {
+        if (index !== 0) {
+          append({ text: item.text, type: item.type });
+        }
+      });
+    }
+
+    if (data?.activities?.length === 0) {
+      editedProject?.activities?.forEach((item) => {
+        appendActivity({
+          text: item.text,
+          type: item.type,
+          videoUrl: item.videoUrl,
+          pdf: item.pdf,
+          videoImg: item.videoImg,
+          // images: item.ImagesActivity,
+          // pdfTest: item.pdfTest,
+        });
+      });
+    }
+    // eslint-disable-next-line
+  }, [editedProject]);
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -62,26 +107,13 @@ const AddProject = () => {
     }
   };
   const handleSubmit = async (e) => {
-    const compressionOptions = {
-      maxSizeMB: 0.4,
-      maxWidthOrHeight: 600,
-      useWebWorker: true,
-    };
-    setLoading(true);
     e.preventDefault();
     const data = getValues();
     const formData = new FormData();
-
-    if (data?.LogoImage && data?.LogoImage?.length > 0) {
+    if (data?.LogoImage && data.LogoImage.length > 0) {
       const logoFile = data.LogoImage[0];
       if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-        if (logoFile.size > 400 * 1024) {
-          toast.success('يتم الآن ضغط الصور');
-          const compressedLogo = await imageCompression(logoFile, compressionOptions);
-          formData.append('logo', compressedLogo);
-        } else {
-          formData.append('logo', logoFile);
-        }
+        formData.append('logo', logoFile);
       } else {
         return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
       }
@@ -89,37 +121,15 @@ const AddProject = () => {
       return toast.error('الصورة مطلوبة');
     }
 
-    if (data?.videoLogo && data.videoLogo.length > 0) {
-      const logoFile = data.videoLogo[0];
-      if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-        if (logoFile.size > 400 * 1024) {
-          toast.success('يتم الآن ضغط صور الأنشطة');
-          const compressedLogo = await imageCompression(logoFile, compressionOptions);
-          formData.append('videoLogo', compressedLogo);
-        } else {
-          formData.append('videoLogo', logoFile);
-        }
-      } else {
-        return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
-      }
-    }
-
-    if (data?.Images && data.Images.length > 0) {
-      toast.success('يتم الآن ضغط الصور');
-      const imageArray = Array.isArray(data.Images) ? data.Images : Array.from(data.Images);
-      for (const [index, file] of imageArray.entries()) {
-        if (file.size > 400 * 1024) {
-          const compressedImage = await imageCompression(file, compressionOptions);
-          formData.append(`images[${index}]`, compressedImage);
-        } else {
-          formData.append(`images[${index}]`, file);
-        }
-      }
-    }
     const summaryAll = data.summary;
     summaryAll.forEach((details, index) => {
       formData.append(`summaries[${index}][text]`, details.text);
       formData.append(`summaries[${index}][type]`, details.type);
+    });
+    const sendImages = data.Images;
+    const imageArray = Array.isArray(sendImages) ? sendImages : Array.from(sendImages);
+    imageArray.forEach((file, index) => {
+      formData.append(`images[${index}]`, file);
     });
     formData.append('name', data.name);
     formData.append('address', data.address);
@@ -131,62 +141,29 @@ const AddProject = () => {
     data.Pdffile.length > 0 && formData.append('pdfURL', data.Pdffile[0]);
     try {
       let response = '';
-      if (user?.role === 'Master') {
-        response = await addProjectMaster(formData, orgid);
-      } else {
-        response = await addProjectOrg(formData);
-      }
+      user?.role === 'Master'
+        ? (response = await addProjectMaster(formData, orgid))
+        : (response = await addProjectOrg(formData));
       console.log(response);
       const activitiesAll = data.activities;
-
-      // for (const [index, details] of activitiesAll.entries()) {
-      for (const details of activitiesAll) {
+      activitiesAll.forEach(async (details, index) => {
         const formData2 = new FormData();
         formData2.append(`text`, details?.text);
         formData2.append(`type`, details?.type);
         formData2.append(`videoUrl`, details?.videoUrl);
-        if (details?.videoImg) {
-          const logoFile = details.videoImg;
-          if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-            if (logoFile.size > 400 * 1024) {
-              toast.success('يتم الآن ضغط صورة الغلاف للنشاط');
-              const compressedLogo = await imageCompression(logoFile, compressionOptions);
-              formData2.append('videoImg', compressedLogo);
-            } else {
-              formData2.append('videoImg', logoFile);
-            }
-          } else {
-            toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
-            continue;
-          }
-        }
-
-        if (details?.images && details.images.length > 0) {
-          toast.success('يتم الآن ضغط صور النشاط');
-          for (const [sec, file] of details.images.entries()) {
-            if (file.size > 400 * 1024) {
-              const compressedImage = await imageCompression(file, compressionOptions);
-              formData2.append(`images[${sec}]`, compressedImage);
-            } else {
-              formData2.append(`images[${sec}]`, file);
-            }
-          }
-        }
-        if (details?.pdfTest) {
-          formData2.append(`pdf`, details.pdfTest);
-        }
-        if (user?.role === 'Master') {
-          await addActivityMaster(formData2, 17);
-        } else {
-          await addActivityOrg(formData2, 17);
-        }
-      }
+        details?.videoImg && formData2.append(`videoImg`, details?.videoImg);
+        details?.pdfTest && formData2.append(`pdf`, details.pdfTest);
+        details?.images.length > 0 &&
+          details?.images?.forEach((det, sec) => {
+            formData2.append(`images[${sec}]`, det);
+          });
+        user?.role === 'Master' ? await addActivityMaster(formData2, 32) : await addActivityOrg(formData2, 32);
+      });
 
       toast.success('تم إضافة مشروع جديد بنجاح');
       navigate(`/rasheed/organizations/${orgid}`);
     } catch (error) {
       console.log(error);
-      setLoading(false);
       toast.error('حدث خطأ ما');
     }
   };
@@ -283,7 +260,7 @@ const AddProject = () => {
       <div className="w-full flex flex-col justify-center items-center">
         {/* <img className="w-64" src={images.loginLogo} alt="لوغو" /> */}
         <p className="w-[80%] rounded-lg text-center text-sm md:text-xl text-white font-bold py-2 bg-[#0D0F2D] bg-opacity-25 my-10">
-          إضافة مشروع
+          تعديل المشروع
         </p>
         <form onSubmit={handleSubmit} className="p-8 w-full md:w-[80%] bg-[#0D0F2D] bg-opacity-5 rounded-lg">
           <div className="flex flex-col-reverse md:flex-row  items-center justify-between ">
@@ -358,23 +335,6 @@ const AddProject = () => {
             customStyleComponent="ml-0 md:mr-2"
             customStyleHeader="mr-2"
           />
-          <div className="w-full flex flex-col justify-center items-center my-4">
-            <label
-              htmlFor="logo-video"
-              className="w-full py-4 rounded-lg text-xs md:text-sm hover:bg-white hover:text-primary text-center text-white bg-primary cursor-pointer"
-            >
-              {'إضافة غلاف الفيديو'}
-            </label>
-            <input {...register('videoLogo')} id="logo-video" type="file" className="hidden" />
-            {errors.videoLogo && <p>{errors.videoLogo.message}</p>}
-            {watch('videoLogo') && watch('videoLogo').length > 0 && (
-              <img
-                className="w-64 h-32 object-cover rounded-lg my-5"
-                src={watch('videoLogo').length && URL.createObjectURL(watch('videoLogo')[0])}
-                alt="logo"
-              />
-            )}
-          </div>
           <div className="w-full flex justify-between items-center my-4">
             <button
               type="button"
@@ -469,7 +429,7 @@ const AddProject = () => {
             {errors.LogoImage && <p>{errors.logo.message}</p>}
             {watch('LogoImage') && watch('LogoImage').length > 0 && (
               <img
-                className="w-64 h-32 object-cover rounded-lg my-5"
+                className="my-6 w-32 h-32"
                 src={watch('LogoImage').length && URL.createObjectURL(watch('LogoImage')[0])}
                 alt="logo"
               />
@@ -553,4 +513,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default EditProject;
