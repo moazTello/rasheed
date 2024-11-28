@@ -38,7 +38,7 @@ const CustomTable = ({ data, remove, edit }) => {
                 <div className="w-full flex justify-center py-2">
                   <button
                     type="button"
-                    onClick={() => remove(index)}
+                    onClick={() => remove(index,item?.backId)}
                     className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-red-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
                   >
                     <FaTrashCan />
@@ -59,6 +59,7 @@ const CustomTable = ({ data, remove, edit }) => {
                         item?.videoImg,
                         item?.images,
                         item?.pdfTest || null,
+                        item?.backId,
                       )
                     }
                     className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-[#3E8AA9] hover:text-[#3E8AA9]"
@@ -69,7 +70,7 @@ const CustomTable = ({ data, remove, edit }) => {
               </td>
               <td className="min-w-40 px-2 text-center">{item.text}</td>
               {item.type && <td className="min-w-40 px-2 text-center">{item.type}</td>}
-              <td className="p-4 text-center">{index + 1}</td>
+              <td className="p-4 text-center"> {item?.backId}</td>
             </tr>
           ))}
         </tbody>

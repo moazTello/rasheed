@@ -75,24 +75,6 @@ const AddOrganization = () => {
     }
     const formData = new FormData();
 
-    // if (data?.LogoImage) {
-    //   const logoFile = data.LogoImage;
-    //   if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-    //     formData.append('logo', logoFile);
-    //   } else {
-    //     return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
-    //   }
-    // } else {
-    //   return toast.error('اللوغو مطلوب');
-    // }
-    // if (data?.Images && Array.isArray(data.Images)) {
-    //   data.Images.forEach((file, index) => {
-    //     formData.append(`images[${index}]`, file);
-    //   });
-    // } else {
-    //   return toast.error('الصور مطلوبة');
-    // }
-
     if (data?.LogoImage) {
       const logoFile = data.LogoImage;
       if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {

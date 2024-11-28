@@ -138,8 +138,8 @@ const AddProject = () => {
       }
       console.log(response);
       const activitiesAll = data.activities;
-
       // for (const [index, details] of activitiesAll.entries()) {
+
       for (const details of activitiesAll) {
         const formData2 = new FormData();
         formData2.append(`text`, details?.text);
@@ -212,7 +212,7 @@ const AddProject = () => {
   const addNumbers = () => {
     const data = getValues();
     if (!data.number || !data.type) {
-      return toast.error('املأ كافة الحقول');
+      return toast.error('املأ عنوان النشاط ووصفه');
     }
     data.numberId === ''
       ? appendActivity({

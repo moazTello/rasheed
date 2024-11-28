@@ -24,11 +24,26 @@ const ImageUploaderActivity = ({ setValue, errors, backendLogo, backendImages, g
 
   useEffect(() => {
     const data = getValues();
-    if (data.activity_video_image) {
-      setLogoPreview(URL.createObjectURL(data.activity_video_image));
+    console.log(data)
+    const file = data?.activity_video_image;
+    if (file instanceof HTMLImageElement) {
+      setLogoPreview(file);
+    } else if (typeof file === 'string') {
+      setLogoPreview(file);
+    } else {
+      setLogoPreview(URL.createObjectURL(file));
     }
-    if (data?.ImagesActivity.length > 0) {
-      const previews = data?.ImagesActivity?.map((file) => URL.createObjectURL(file));
+
+    if (data?.ImagesActivity?.length > 0) {
+      const previews = data?.ImagesActivity?.map((file) => {
+        if (file?.image instanceof HTMLImageElement) {
+          return file?.image
+        } else if (typeof file?.image === 'string') {
+          return file?.image
+        } else {
+          return URL.createObjectURL(file);
+        }
+      });
       setImagePreviews([...previews]);
     }
   }, [setLogoPreview, getValues]);
@@ -67,7 +82,7 @@ const ImageUploaderActivity = ({ setValue, errors, backendLogo, backendImages, g
         </label>
         <input id="logo-image" type="file" className="hidden" onChange={handleLogoChange} />
         {errors.LogoImage && <p>{errors.LogoImage.message}</p>}
-        {logoPreview && <img className="my-6 h-32 rounded-lg" src={logoPreview} alt="logo" />}
+        {logoPreview && logoPreview !== "no image" && <img className="my-6 h-32 rounded-lg" src={logoPreview} alt="logo" />}
       </div>
       <div className="w-full flex flex-col justify-center items-center mb-4">
         {/* <label

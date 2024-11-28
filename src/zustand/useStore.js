@@ -197,6 +197,46 @@ const useStore = create((set) => ({
     }
   },
 
+  EditProjectMaster: async (data, orgid, projid) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.post(`/api/masterAdmin/updatePro/${orgid}/${projid}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          "_method":"put",
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  EditProjectOrg: async (data) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.post(`/api/masterAdmin/updatePro/7/2`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+          "_method":"put",
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  
+
 
   addActivityMaster: async (data, id) => {
     set({ isLoading: true, error: null });
@@ -220,6 +260,78 @@ const useStore = create((set) => ({
     set({ isLoading: true, error: null });
     try {
       const response = await DataTransfer.post(`/api/organization/createActivity/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  EditActivityMaster: async (data, id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.post(`/api/masterAdmin/updateActivity/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  EditActivityOrg: async (data, id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.post(`/api/organization/updateActivity/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  DeleteActivityMaster: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.delete(`/api/masterAdmin/deleteActivity/${id}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      set({ isLoading: false });
+      return response;
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  DeleteActivityOrg: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.delete(`/api/organization/deleteActivity/${id}`, {
         headers: {
           Authorization: `Bearer ${useStore.getState().token}`,
           // 'Content-Type': 'application/json',

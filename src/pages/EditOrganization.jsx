@@ -3,6 +3,7 @@ import { useForm, useFieldArray } from 'react-hook-form';
 import InputField from '../components/Fields/InputField';
 import CustomButton from '../components/Fields/CustomButton';
 // import { images } from '../constants';
+import imageCompression from 'browser-image-compression';
 import { useNavigate, useParams } from 'react-router-dom';
 import CustomTable from '../components/Tables/CustomTable';
 import SkillsTable from '../components/Tables/SkillsTable';
@@ -16,7 +17,7 @@ import useStore from '../zustand/useStore';
 import ImageUploader from '../components/Fields/ImageUploader';
 const EditOrganization = () => {
   const navigate = useNavigate();
-  const { EditOrganization, isLoading, editedorga, fetcheditedOrga } = useStore();
+  const { EditOrganization, isLoading, editedorga, fetcheditedOrga, setLoading } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [skillsModal, setSkillsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
@@ -74,7 +75,7 @@ const EditOrganization = () => {
     setValue('Details_1', editedorga?.details?.[0]?.text || '');
     setValue('password_confirmation', null);
     setValue('password', null);
-  
+
     if (data.details.length === 0) {
       editedorga?.details?.forEach((item, index) => {
         if (index !== 0) {
@@ -82,31 +83,24 @@ const EditOrganization = () => {
         }
       });
     }
-  
+
     if (data.numbers.length === 0) {
       editedorga?.number?.forEach((item) => {
         appendNumbers({ type: item.type, number: item.number });
       });
     }
-  
+
     if (data.skills.length === 0) {
       editedorga?.skils?.forEach((item) => {
         appendSkills({ text: item.text });
       });
     }
-  
+
     editedorga?.socials?.forEach((item) => {
       setValue(item.type, item.url || '');
     });
-    // eslint-disable-next-line 
+    // eslint-disable-next-line
   }, [editedorga]);
-
-
-  // const urlToFile = async (url, filename, mimeType) => {
-  //   const response = await fetch(url);
-  //   const blob = await response.blob();
-  //   return new File([blob], filename, { type: mimeType });
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,43 +108,59 @@ const EditOrganization = () => {
     if (data.password !== data.password_confirmation) {
       return toast.error('يرجى التأكد من كلمات المرور');
     }
+    const compressionOptions = {
+      maxSizeMB: 0.4,
+      maxWidthOrHeight: 600,
+      useWebWorker: true,
+    };
+    setLoading(true);
     const formData = new FormData();
     if (data?.LogoImage) {
       let logoFile = data.LogoImage;
       if (logoFile instanceof HTMLImageElement) {
-        formData.append("logo", []);
-      } else if (typeof logoFile === "string") {
-        formData.append("logo", []);
+        formData.append('logo', []);
+      } else if (typeof logoFile === 'string') {
+        formData.append('logo', []);
       }
       if (logoFile.type?.match(/image\/(jpeg|jpg|png|gif)/)) {
-        formData.append("logo", logoFile);
-      } 
+        if (logoFile.size > 400 * 1024) {
+          toast.success('يتم الآن ضغط الصور');
+          const compressedLogo = await imageCompression(logoFile, compressionOptions);
+          formData.append('logo', compressedLogo);
+        } else {
+          formData.append('logo', logoFile);
+        }
+      }
     } else {
-      return toast.error("الصورة مطلوبة");
+      return toast.error('الصورة مطلوبة');
     }
+
     if (data?.Images && Array.isArray(data.Images)) {
       try {
         await Promise.all(
           data.Images.map(async (image, index) => {
-            if (typeof image === "string") {
-             return 0
+            if (typeof image === 'string') {
+              return 0;
+            } else if (image instanceof HTMLImageElement) {
+              return 0;
+            } else {
+              if (image.size > 400 * 1024) {
+                const compressedLogo = await imageCompression(image, compressionOptions);
+                formData.append(`images[${index}]`, compressedLogo);
+              } else {
+                formData.append(`images[${index}]`, image);
+              }
             }
-            else if (image instanceof HTMLImageElement) {
-              return 0
-            }
-            else{
-              formData.append(`images[${index}]`, image);
-            }
-          })
+          }),
         );
       } catch (error) {
-        return toast.error(error.message || "حدث خطأ أثناء معالجة الصور");
+        return toast.error(error.message || 'حدث خطأ أثناء معالجة الصور');
       }
     } else {
-      return toast.error("الصور مطلوبة");
+      return toast.error('الصور مطلوبة');
     }
-    if(data.password > 0 && data.password_confirmation){
-      console.log("passwords")
+    if (data.password > 0 && data.password_confirmation) {
+      console.log('passwords');
       formData.append('password_confirmation', data.password_confirmation);
       formData.append('password', data.password);
     }
@@ -210,7 +220,7 @@ const EditOrganization = () => {
       formData.append(`socials[${index}][url]`, social.url || '');
     });
     try {
-      await EditOrganization(formData,orgid);
+      await EditOrganization(formData, orgid);
       toast.success('تم تعديل المنظمة الجديدة بنجاح');
       navigate('/rasheed/organizations');
     } catch (error) {
