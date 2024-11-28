@@ -160,7 +160,6 @@ const EditOrganization = () => {
       return toast.error('الصور مطلوبة');
     }
     if (data.password > 0 && data.password_confirmation) {
-      console.log('passwords');
       formData.append('password_confirmation', data.password_confirmation);
       formData.append('password', data.password);
     }

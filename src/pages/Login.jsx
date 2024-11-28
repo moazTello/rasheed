@@ -43,7 +43,6 @@ const Login = () => {
       sessionStorage.setItem('user', JSON.stringify(user));
       sessionStorage.setItem('organization', JSON.stringify(response?.data?.response));
       setOrganizData(response?.data?.response);
-      console.log(response);
       setLoading(false);
       if (type) {
         navigate('/rasheed/Organizations');

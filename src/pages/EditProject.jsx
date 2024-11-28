@@ -28,12 +28,17 @@ const EditProject = () => {
     DeleteActivityOrg,
     EditProjectMaster,
     EditProjectOrg,
+    fetcheditedProjectOrg,
   } = useStore();
   const [detailsModal, setDetailsModal] = useState(false);
   const [numbersModal, setNumbersModal] = useState(false);
   useEffect(() => {
-    fetcheditedProjectMaster(orgid, projid);
-  }, [fetcheditedProjectMaster, orgid, projid]);
+    if (user.role === 'Master') {
+      fetcheditedProjectMaster(orgid, projid);
+    } else {
+      fetcheditedProjectOrg(projid);
+    }
+  }, [fetcheditedProjectMaster, fetcheditedProjectOrg, orgid, projid, user]);
   const {
     register,
     formState: { errors },
@@ -64,7 +69,6 @@ const EditProject = () => {
   const [pdfUrl, setPdfUrl] = useState(null);
   const [pdfUrlActivity, setPdfUrlActivity] = useState(null);
   useEffect(() => {
-    console.log(editedProject);
     if (!editedProject) return;
     const data = getValues();
     setValue('name', editedProject?.name || '');
@@ -77,7 +81,7 @@ const EditProject = () => {
     setPdfUrl(editedProject.pdfURL);
     if (data?.summary?.length === 0) {
       editedProject?.summary?.forEach((item, index) => {
-          append({ text: item.text, type: item.type });
+        append({ text: item.text, type: item.type });
       });
     }
 
@@ -116,125 +120,6 @@ const EditProject = () => {
       setValue('pdfTest', file);
     }
   };
-  // const handleSubmit = async (e) => {
-  //   const compressionOptions = {
-  //     maxSizeMB: 0.4,
-  //     maxWidthOrHeight: 600,
-  //     useWebWorker: true,
-  //   };
-  //   setLoading(true);
-  //   e.preventDefault();
-  //   const data = getValues();
-  //   const formData = new FormData();
-
-  //   if (data?.LogoImage) {
-  //     let logoFile = data.LogoImage;
-  //     if (logoFile instanceof HTMLImageElement) {
-  //       formData.append('logo', []);
-  //     } else if (typeof logoFile === 'string') {
-  //       formData.append('logo', []);
-  //     } else if (data?.LogoImage?.length > 0) {
-  //       const logoFile = data.LogoImage[0];
-  //       if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-  //         if (logoFile.size > 400 * 1024) {
-  //           toast.success('يتم الآن ضغط الصور');
-  //           const compressedLogo = await imageCompression(logoFile, compressionOptions);
-  //           formData.append('logo', compressedLogo);
-  //         } else {
-  //           formData.append('logo', logoFile);
-  //         }
-  //       } else {
-  //         return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
-  //       }
-  //     } else {
-  //       return toast.error('الصورة مطلوبة');
-  //     }
-  //   }
-
-  //   if (data?.videoLogo) {
-  //     let logoFile = data.videoLogo;
-  //     if (logoFile instanceof HTMLImageElement) {
-  //       formData.append('videoLogo', []);
-  //     } else if (typeof logoFile === 'string') {
-  //       formData.append('videoLogo', []);
-  //     } else if (data?.videoLogo?.length > 0) {
-  //       const logoFile = data.videoLogo[0];
-  //       if (logoFile.type.match(/image\/(jpeg|jpg|png|gif)/)) {
-  //         if (logoFile.size > 400 * 1024) {
-  //           toast.success('يتم الآن ضغط الصور');
-  //           const compressedLogo = await imageCompression(logoFile, compressionOptions);
-  //           formData.append('videoLogo', compressedLogo);
-  //         } else {
-  //           formData.append('videoLogo', logoFile);
-  //         }
-  //       } else {
-  //         return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
-  //       }
-  //     } else {
-  //       return toast.error('الصورة مطلوبة');
-  //     }
-  //   }
-
-  //   if (data?.Images && data.Images.length > 0) {
-  //     toast.success('يتم الآن ضغط الصور');
-  //     const imageArray = Array.isArray(data.Images) ? data.Images : Array.from(data.Images);
-  //     for (const [index, file] of imageArray.entries()) {
-  //       if (typeof file === 'string') {
-  //         return 0;
-  //       } else if (file instanceof HTMLImageElement) {
-  //         return 0;
-  //       }
-  //       if (file.size > 400 * 1024) {
-  //         const compressedImage = await imageCompression(file, compressionOptions);
-  //         formData.append(`images[${index}]`, compressedImage);
-  //       } else {
-  //         formData.append(`images[${index}]`, file);
-  //       }
-  //     }
-  //   }
-
-  //   const summaryAll = data.summary;
-  //   summaryAll.forEach((details, index) => {
-  //     formData.append(`summaries[${index}][text]`, details.text);
-  //     formData.append(`summaries[${index}][type]`, details.type);
-  //   });
-  //   formData.append('name', data.name);
-  //   formData.append('address', data.address);
-  //   formData.append('start_At', data.start_At);
-  //   formData.append('end_At', data.end_At);
-  //   formData.append('benefitDir', data.benefitDir);
-  //   formData.append('benefitUnd', data.benefitUnd);
-  //   formData.append('videoURL', data.videoURL);
-  //   if (data?.Pdffile && data.Pdffile.length > 0) {
-  //     if (typeof data?.Pdffile === 'string') {
-  //       formData.append('pdfURL', []);
-  //     } else if (data?.Pdffile instanceof HTMLImageElement) {
-  //       formData.append('pdfURL', []);
-  //     } else {
-  //       formData.append('pdfURL', data.Pdffile[0]);
-  //     }
-  //   }
-  //   // data.Pdffile.length > 0 && formData.append('pdfURL', data.Pdffile[0]);
-  //   // if (data?.pdfTest && typeof data.pdfTest !== 'string' && !(data.pdfTest instanceof HTMLImageElement)) {
-  //   //   formData.append(`pdfURL`, data.Pdffile[0]);
-  //   // }
-  //   try {
-  //     console.log(data);
-  //     let response = '';
-  //     if (user?.role === 'Master') {
-  //       response = await EditProjectMaster(formData, orgid, projid);
-  //     } else {
-  //       response = await EditProjectOrg(formData, projid);
-  //     }
-  //     console.log(response);
-  //     toast.success('تم تعديل مشروع جديد بنجاح');
-  //     navigate(`/rasheed/organizations/${orgid}`);
-  //   } catch (error) {
-  //     console.log(error);
-  //     setLoading(false);
-  //     toast.error('حدث خطأ ما');
-  //   }
-  // };
   const handleSubmit = async (e) => {
     const compressionOptions = {
       maxSizeMB: 0.4,
@@ -243,13 +128,12 @@ const EditProject = () => {
     };
     setLoading(true);
     e.preventDefault();
-  
+
     const data = getValues();
     const formData = new FormData();
-  
+
     const appendFile = async (key, file, index = null) => {
       if (typeof file === 'string') {
-        // Skip strings (remote URLs)
         return;
       }
       if (file?.type?.match(/image\/(jpeg|jpg|png|gif)/)) {
@@ -261,24 +145,20 @@ const EditProject = () => {
           formData.append(index !== null ? `${key}[${index}]` : key, file);
         }
       } else if (file?.type?.match(/application\/pdf/)) {
-        // Handle PDFs
         formData.append(index !== null ? `${key}[${index}]` : key, file);
       } else {
         toast.error('صيغة الملف غير مدعومة');
       }
     };
-  
-    // Handle Logo Image
+
     if (data?.LogoImage?.length > 0) {
       await appendFile('logo', data.LogoImage[0]);
     }
-  
-    // Handle Video Logo
+
     if (data?.videoLogo?.length > 0) {
       await appendFile('videoLogo', data.videoLogo[0]);
     }
-  
-    // Handle Images Array
+
     if (data?.Images?.length > 0) {
       toast.success('يتم الآن ضغط الصور');
       const imageArray = Array.isArray(data.Images) ? data.Images : Array.from(data.Images);
@@ -286,13 +166,11 @@ const EditProject = () => {
         await appendFile('images', file, index);
       }
     }
-  
-    // Handle PDF File
+
     if (data?.Pdffile?.length > 0) {
       await appendFile('pdfURL', data.Pdffile[0]);
     }
-  
-    // Append other fields
+
     data.summary.forEach((details, index) => {
       formData.append(`summaries[${index}][text]`, details.text);
       formData.append(`summaries[${index}][type]`, details.type);
@@ -304,16 +182,13 @@ const EditProject = () => {
     formData.append('benefitDir', data.benefitDir);
     formData.append('benefitUnd', data.benefitUnd);
     formData.append('videoURL', data.videoURL);
-  
-    // Submit the form data
+
     try {
-      let response = '';
       if (user?.role === 'Master') {
-        response = await EditProjectMaster(formData, orgid, projid);
+        await EditProjectMaster(formData, orgid, projid);
       } else {
-        response = await EditProjectOrg(formData, projid);
+        await EditProjectOrg(formData, projid);
       }
-      console.log(response);
       toast.success('تم تعديل مشروع جديد بنجاح');
       navigate(`/rasheed/organizations/${orgid}`);
     } catch (error) {
@@ -323,7 +198,7 @@ const EditProject = () => {
       setLoading(false);
     }
   };
-  
+
   const addDetails = () => {
     const data = getValues();
     if (!data.DetailsCustom || !data.DetailsDescription) {
@@ -412,10 +287,11 @@ const EditProject = () => {
       setValue('newItemTrigger', true);
       if (user?.role === 'Master') {
         await addActivityMaster(formData2, projid);
+        await fetcheditedProjectMaster(orgid, projid);
       } else {
         await addActivityOrg(formData2, projid);
+        await fetcheditedProjectOrg(projid);
       }
-      await fetcheditedProjectMaster(orgid, projid);
     } else {
       updateActivity(data.numberId, {
         text: data.number,
@@ -473,10 +349,11 @@ const EditProject = () => {
       }
       if (user?.role === 'Master') {
         await EditActivityMaster(formData2, data.backendActIdCary);
+        await fetcheditedProjectMaster(orgid, projid);
       } else {
         await EditActivityOrg(formData2, data.backendActIdCary);
+        await fetcheditedProjectOrg(projid);
       }
-      await fetcheditedProjectMaster(orgid, projid);
     }
     setValue('type', '');
     setValue('number', '');

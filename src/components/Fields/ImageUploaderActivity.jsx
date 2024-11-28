@@ -24,7 +24,6 @@ const ImageUploaderActivity = ({ setValue, errors, backendLogo, backendImages, g
 
   useEffect(() => {
     const data = getValues();
-    console.log(data)
     const file = data?.activity_video_image;
     if (file instanceof HTMLImageElement) {
       setLogoPreview(file);

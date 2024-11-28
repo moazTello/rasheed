@@ -19,7 +19,6 @@ const ProblemsTable = ({ data }) => {
       toast.error('حدث خطأ ما');
     }
   };
-  console.log(data);
   return (
     <div className="overflow-auto rounded-lg h-fit max-h-[70vh] no-scrollbar">
       <table className="table w-full">

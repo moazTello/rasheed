@@ -1,24 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProjectsTable from '../components/Tables/ProjectsTable';
 import { BiDetail } from 'react-icons/bi';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../zustand/useStore';
 const OrgaDetails = () => {
   const { orgid } = useParams();
-  const { OrganizData, setOrganizData, fetchOrganizationsList, Organizations, isLoading, user } = useStore();
+  const { OrganizData, setOrganizData, fetchOrganizationsList, Organizations, isLoading, user, fetchProgectOrg } =
+    useStore();
+  const [projectorg, setProjectorg] = useState();
   useEffect(() => {
     const fetch = async () => {
       try {
-        user.role === 'Master' && (await fetchOrganizationsList());
+        if (user.role === 'Master') {
+          await fetchOrganizationsList();
+        } else {
+          const response = await fetchProgectOrg();
+          const orgsession = JSON.parse(sessionStorage.getItem('organization'));
+          if (orgsession) {
+            orgsession.projects = response.projects;
+          }
+          sessionStorage.setItem('organization', JSON.stringify(orgsession));
+          setOrganizData(orgsession);
+        }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
+
     fetch();
-  }, [fetchOrganizationsList, user]);
+  }, [fetchOrganizationsList, user, fetchProgectOrg, setOrganizData]);
+
   useEffect(() => {
-    user.role === 'Master' && setOrganizData(Organizations.find((item) => item.id === Number(orgid)));
-  }, [Organizations, orgid, setOrganizData, user]);
+    if (user.role === 'Master') {
+      const org = Organizations.find((item) => item.id === Number(orgid));
+      setOrganizData(org);
+      setProjectorg(org.projects);
+    } else {
+      setProjectorg(OrganizData.projects);
+    }
+  }, [Organizations, orgid, setOrganizData, OrganizData, user]);
   const navigate = useNavigate();
   return (
     <div className="w-full flex flex-col items-center min-h-[100vh] h-fit pt-10 md:pt-32">
@@ -61,10 +81,10 @@ const OrgaDetails = () => {
         <p className="w-full text-right text-white text-sm md:text-lg">جدول كل المشاريع</p>
       </div>
       <div className="w-full p-2">
-        {!OrganizData?.projects?.length > 0 && !isLoading ? (
+        {!projectorg?.length > 0 && !isLoading ? (
           <p className="w-full text-center text-white text-sm md:text-lg">لايوجد مشاريع</p>
         ) : (
-          <ProjectsTable data={OrganizData?.projects} />
+          <ProjectsTable data={projectorg} />
         )}
       </div>
     </div>

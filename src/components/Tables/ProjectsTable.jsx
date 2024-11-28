@@ -6,7 +6,7 @@ import {
 // import { IoCloseSharp } from 'react-icons/io5';
 import { FaPaintBrush } from 'react-icons/fa';
 import { LuClipboardEdit } from 'react-icons/lu';
-import { BiDetail } from 'react-icons/bi';
+// import { BiDetail } from 'react-icons/bi';
 import { useState } from 'react';
 import { images } from '../../constants';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,8 +22,12 @@ const ProjectsTable = ({ data }) => {
     var result = confirm('هل أنت متأكد من حذف المشروع ؟');
     if (!result) return;
     try {
-      user?.role === 'Master' ? await deleteProjectMaster(id, orgid) : await deleteProjectOrg(id);
-      await fetchOrganizationsList();
+      if (user?.role === 'Master') {
+        await deleteProjectMaster(id, orgid);
+        await fetchOrganizationsList();
+      } else {
+        await deleteProjectOrg(id);
+      }
       toast.success('تم حذف المشروع بنجاح');
     } catch (error) {
       toast.error('حذث خطأ ما');
@@ -42,7 +46,7 @@ const ProjectsTable = ({ data }) => {
           >
             <th className="px-2 min-w-20">الحذف</th>
             <th className="px-2 min-w-20">التعديل</th>
-            <th className="px-2 min-w-20">التفاصيل</th>
+            {/* <th className="px-2 min-w-20">التفاصيل</th> */}
             <th className="p-4">التقييم</th>
             <th className="p-4">العنوان</th>
             <th className="p-4">المشروع</th>
@@ -114,7 +118,7 @@ const ProjectsTable = ({ data }) => {
                     </button>
                   </div>
                 </td>
-                <td className="px-6 min-w-20">
+                {/* <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
                       onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${item.id}`)}
@@ -123,7 +127,7 @@ const ProjectsTable = ({ data }) => {
                       <BiDetail />
                     </button>
                   </div>
-                </td>
+                </td> */}
                 <td className="min-w-40 px-2 text-center">{item?.rate}</td>
                 <td className="min-w-40 px-2 text-center">{item?.address}</td>
                 <td className="min-w-40 px-2 text-center">{item?.name}</td>
