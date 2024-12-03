@@ -23,7 +23,7 @@ const AddOrganization = () => {
   const [numbersModal, setNumbersModal] = useState(false);
   const [socialsModal, setSocialsModal] = useState(false);
   useEffect(() => {
-    if (Organizations.length > 6) {
+    if (Organizations.length > 8) {
       toast.error('لقد وصلت الى الحد الأقصى من المنظمات لا يمكنك إضافة منظمة جديدة');
     }
   }, [Organizations]);
@@ -63,16 +63,19 @@ const AddOrganization = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (Organizations.length > 8) {
+      return toast.error('لقد وصلت الى الحد الأقصى من المنظمات لا يمكنك إضافة منظمة جديدة');
+    }
     const compressionOptions = {
       maxSizeMB: 0.4,
       maxWidthOrHeight: 600,
       useWebWorker: true,
     };
-    setLoading(true);
     const data = getValues();
     if (data.password !== data.password_confirmation) {
       return toast.error('يرجى التأكد من كلمات المرور');
     }
+    setLoading(true);
     const formData = new FormData();
 
     if (data?.LogoImage) {
@@ -86,15 +89,17 @@ const AddOrganization = () => {
           formData.append('logo', logoFile);
         }
       } else {
+        setLoading(false);
         return toast.error('يجب ان يكون نوع الصورة من هذه الأنواع فقط  jpeg, jpg, png, gif');
       }
     } else {
+      setLoading(false);
       return toast.error('اللوغو مطلوب');
     }
     if (data?.Images && Array.isArray(data.Images)) {
       for (let i = 0; i < data.Images.length; i++) {
         const file = data.Images[i];
-        if (file.size > 400 * 1024) {
+        if (file.size > 800 * 1024) {
           const compressedImage = await imageCompression(file, compressionOptions);
           formData.append(`images[${i}]`, compressedImage);
         } else {
@@ -102,6 +107,7 @@ const AddOrganization = () => {
         }
       }
     } else {
+      setLoading(false);
       return toast.error('الصور مطلوبة');
     }
 

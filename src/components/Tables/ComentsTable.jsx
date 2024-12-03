@@ -1,24 +1,29 @@
-import { FaTrashCan } from 'react-icons/fa6';
+// import { FaTrashCan } from 'react-icons/fa6';
 import { FaPaintBrush } from 'react-icons/fa';
 import { useState } from 'react';
 import useStore from '../../zustand/useStore';
-import toast from 'react-hot-toast';
-const SuggestionsTable = ({ data }) => {
-  const { deleteSuggestion, fetchSuggestionsList, isLoading } = useStore();
+// import toast from 'react-hot-toast';
+// import { useParams } from 'react-router-dom';
+
+const CommentsTable = ({ data }) => {
+  const { 
+    // deleteComment, fetchCommentsProject,
+     isLoading } = useStore();
   const [tableColor, setTableColor] = useState(true);
-  const deletSuggestion = async (id) => {
-    // eslint-disable-next-line no-restricted-globals
-    var result = confirm('هل أنت متأكد من حذف الاقتراح ؟');
-    if (!result) return;
-    try {
-      await deleteSuggestion(id);
-      await fetchSuggestionsList();
-      toast.success('تم حذف الاقتراح بنجاح');
-    } catch (error) {
-      console.log(error);
-      toast.error('حدث خطأ ما');
-    }
-  };
+  // const {projid} = useParams();
+  // const handleDeleteProblem = async (id) => {
+  //   // eslint-disable-next-line no-restricted-globals
+  //   var result = confirm('هل أنت متأكد من حذف التعليق ؟');
+  //   if (!result) return;
+  //   try {
+  //     await deleteComment(id);
+  //     await fetchCommentsProject(projid);
+  //     toast.success('تم حذف الشكوى بنجاح');
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error('حدث خطأ ما');
+  //   }
+  // };
   return (
     <div className="overflow-auto rounded-lg h-fit max-h-[70vh] no-scrollbar">
       <table className="table w-full">
@@ -30,14 +35,9 @@ const SuggestionsTable = ({ data }) => {
                 : 'bg-slate-50 w-full text-sm text-primary'
             } `}
           >
-            <th className="px-2 min-w-20">الحذف</th>
-            <th className="p-4">الاقتراح</th>
-            <th className="p-4">الجوال</th>
-            <th className="p-4">العنوان</th>
-            <th className="p-4">البريد</th>
+            {/* <th className="px-2 min-w-20">الحذف</th> */}
+            <th className="p-4">التعليق</th>
             <th className="p-4">الاسم</th>
-            <th className="p-4">المشروع</th>
-            <th className="p-4">المنظمة</th>
             <th className="p-4">
               <button onClick={() => setTableColor((old) => !old)}>
                 <FaPaintBrush size={16} />
@@ -54,7 +54,7 @@ const SuggestionsTable = ({ data }) => {
                   : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
               } `}
             >
-              <td colSpan="10">
+              <td colSpan="14">
                 <div className="flex justify-center my-3 w-full" role="status">
                   <svg
                     aria-hidden="true"
@@ -85,24 +85,19 @@ const SuggestionsTable = ({ data }) => {
                     : 'bg-slate-50 w-full text-sm text-primary hover:bg-slate-100 border-t-2 border-[#e8e9e9]'
                 } `}
               >
-                <td className="px-6 min-w-20">
+                {/* <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
-                      onClick={() => deletSuggestion(item.id)}
+                      // onClick={() => handleDeleteProblem(item.id)}
                       className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-white bg-red-500 hover:border-2 hover:border-red-500 hover:text-red-500"
                     >
                       <FaTrashCan />
                     </button>
                   </div>
-                </td>
-                <td className="min-w-40 px-2 text-center py-4">{item.text}</td>
-                <td className="min-w-40 px-2 text-center">{item.phone}</td>
-                <td className="min-w-40 px-2 text-center">{item.address}</td>
-                <td className="min-w-40 px-2 text-center">{item.email}</td>
-                <td className="min-w-40 px-2 text-center">{item.fullName}</td>
-                <td className="min-w-40 px-2 text-center">{item.project_name || '-'}</td>
-                <td className="min-w-40 px-2 text-center">{item.organization_name || '-'}</td>
-                <th className="p-4 text-center"></th>
+                </td> */}
+                <td className="min-w-40 px-2 text-center my-4">{item?.comment}</td>
+                <td className="min-w-40 px-2 text-center my-4">{item?.name}</td>
+                <th className="p-4 text-center">{index + 1}</th>
               </tr>
             ))
           )}
@@ -112,4 +107,4 @@ const SuggestionsTable = ({ data }) => {
   );
 };
 
-export default SuggestionsTable;
+export default CommentsTable;

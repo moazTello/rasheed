@@ -15,6 +15,7 @@ const Navbar = () => {
     user.role === 'Master' ? await logoutMaster() : await logoutOrg();
     sessionStorage.setItem('accessT', null);
     sessionStorage.setItem('user', null);
+    sessionStorage.setItem('organization', null);
     navigate('/rasheed');
   };
   return (
@@ -27,7 +28,7 @@ const Navbar = () => {
         {/* <div className="flex-1 ml-5 md:ml-12 h-6">
           <img className="w-8 md:w-16 rounded-lg " src={images.loginLogo} alt="لوغو" />
           </div> */}
-        {user.role === 'Master' && (
+        {user?.role === 'Master' && (
           <>
             <Link
               to="/rasheed/organizations/profile"
@@ -40,7 +41,7 @@ const Navbar = () => {
           </>
         )}
         <div className="hidden md:flex">
-          {user.role === 'Master' && (
+          {user?.role === 'Master' && (
             <>
               {/* <Link
             to="/rasheed/organizations/addmasteradmin"
@@ -58,6 +59,14 @@ const Navbar = () => {
               >
                 الزيارات
               </Link>
+              {/* <Link
+                to="/rasheed/organizations/openions"
+                className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
+                  path.pathname.includes('/rasheed/organizations/openions') ? customPathStyle : ''
+                }`}
+              >
+                الاستطلاع
+              </Link> */}
               <Link
                 to="/rasheed/organizations/problems"
                 className={`text-white text-sm md:text-lg mx-3 py-3 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
@@ -106,7 +115,7 @@ const Navbar = () => {
         >
           إضافة آدمن رئيسي
         </Link> */}
-        {user.role === 'Master' && (
+        {user?.role === 'Master' && (
           <>
             <Link
               onClick={() => setToggleNav((old) => !old)}
@@ -126,6 +135,15 @@ const Navbar = () => {
             >
               الشكاوي
             </Link>
+            {/* <Link
+              onClick={() => setToggleNav((old) => !old)}
+              to="/rasheed/organizations/openions"
+              className={`text-white text-sm md:text-lg mx-3 my-2 py-1 px-2 border-b-4 border-transparent cursor-pointer hover:text-green-500 ${
+                path.pathname.includes('/rasheed/organizations/openions') ? customPathStyle : ''
+              }`}
+            >
+              الاستطلاع
+            </Link> */}
             <Link
               onClick={() => setToggleNav((old) => !old)}
               to="/rasheed/organizations/suggestions"

@@ -14,7 +14,7 @@ const Problems = () => {
         <p className="w-full text-right text-white text-sm md:text-lg">جدول كل الشكاوي</p>
       </div>
       <div className="w-full p-2">
-        {!problems.length > 0 && !isLoading ? (
+        {!problems?.length > 0 && !isLoading ? (
           <p className="w-full text-center text-white text-sm md:text-lg">لا يوجد شكاوي</p>
         ) : (
           <ProblemssTable data={problems} />

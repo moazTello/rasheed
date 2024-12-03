@@ -34,7 +34,7 @@ const OrgaDetails = () => {
     if (user.role === 'Master') {
       const org = Organizations.find((item) => item.id === Number(orgid));
       setOrganizData(org);
-      setProjectorg(org.projects);
+      setProjectorg(org?.projects);
     } else {
       setProjectorg(OrganizData.projects);
     }
@@ -49,12 +49,16 @@ const OrgaDetails = () => {
         <div className="w-full flex flex-col items-end">
           <p className="text-xl text-white mb-5 mr-3">تفاصيل المنظمة</p>
           <div className="w-[90%] md:w-[60%] flex items-center justify-between mr-5">
-            <button className="text-white p-1 bg-blue-800 border-[1px] hover:text-blue-800 hover:bg-white border-blue-800 rounded-md text-xs mr-5">
-              المقترحات
-            </button>
-            <button className="text-white p-1 rounded-md border-[1px] hover:text-red-500 hover:bg-white border-red-500 bg-red-500 text-xs mr-5">
-              الشكاوي
-            </button>
+            {/* {user.role === 'Master' && (
+              <>
+                <button className="text-white p-1 bg-blue-800 border-[1px] hover:text-blue-800 hover:bg-white border-blue-800 rounded-md text-xs mr-5">
+                  المقترحات
+                </button>
+                <button className="text-white p-1 rounded-md border-[1px] hover:text-red-500 hover:bg-white border-red-500 bg-red-500 text-xs mr-5">
+                  الشكاوي
+                </button>
+              </>
+            )} */}
             <p className="flex flex-1 justify-end text-lg text-right text-green-500">{OrganizData?.name}</p>
           </div>
           <div className="w-[90%] md:w-[60%] flex items-center justify-between mt-5 mr-5">

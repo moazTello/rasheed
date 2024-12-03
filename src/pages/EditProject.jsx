@@ -137,7 +137,7 @@ const EditProject = () => {
         return;
       }
       if (file?.type?.match(/image\/(jpeg|jpg|png|gif)/)) {
-        if (file.size > 400 * 1024) {
+        if (file.size > 800 * 1024) {
           toast.success('يتم الآن ضغط الصور');
           const compressedFile = await imageCompression(file, compressionOptions);
           formData.append(index !== null ? `${key}[${index}]` : key, compressedFile);
@@ -272,7 +272,7 @@ const EditProject = () => {
           } else if (file instanceof HTMLImageElement) {
             return 0;
           } else {
-            if (file.size > 400 * 1024) {
+            if (file.size > 800 * 1024) {
               const compressedImage = await imageCompression(file, compressionOptions);
               formData2.append(`images[${sec}]`, compressedImage);
             } else {
@@ -606,12 +606,12 @@ const EditProject = () => {
                       <iframe src={pdfUrlActivity} className="my-6 w-full h-96 border rounded-lg" title="PDF Viewer" />
                     )}
                   </div>
-                  <CustomButton buttonText="إضافة نشاط" type="button" loading={isLoading} onClick={addNumbers} />
+                  <CustomButton buttonText="إضافة نشاط" type="button" loading={isLoading} onClick={addNumbers}/>
                 </div>
               </div>
             </div>
           )}
-          {activities.length > 0 && <CustomTable data={activities} remove={handleRemoveActivity} edit={editActivity} />}
+          {activities.length > 0 && <CustomTable data={activities} remove={handleRemoveActivity} edit={editActivity} comment={true}/>}
           <div className="w-full flex flex-col justify-center items-center my-4">
             <label
               htmlFor="logo-image"

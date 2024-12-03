@@ -3,6 +3,8 @@ import { FaPaintBrush } from 'react-icons/fa';
 import { useState } from 'react';
 import useStore from '../../zustand/useStore';
 import toast from 'react-hot-toast';
+import moment from 'moment';
+
 const ProblemsTable = ({ data }) => {
   const { deleteProblem, fetchProblemsList, isLoading } = useStore();
   const [tableColor, setTableColor] = useState(true);
@@ -103,22 +105,19 @@ const ProblemsTable = ({ data }) => {
                 <td className="min-w-40 px-2 text-center my-4">{item.text}</td>
                 <td className="min-w-40 px-2 text-center my-4">
                   {item?.typeProblem?.map((item, index) => (
-                    <span>item</span>
+                    <p key={index}>{item?.type}</p>
                   ))}
                 </td>
                 <td className="min-w-40 px-2 text-center my-4">{item.isPrevious}</td>
-                <td className="min-w-40 px-2 text-center my-4">{item.date}</td>
+                <td className="min-w-40 px-2 text-center my-4">{moment(item?.date).format('YYYY-MM-DD')}</td>
                 <td className="min-w-40 px-2 text-center my-4">{item.benifit}</td>
-
                 <td className="min-w-40 px-2 text-center">{item.phone}</td>
                 <td className="min-w-40 px-2 text-center">{item.address}</td>
-                <td className="min-w-40 px-2 text-center">{item.email}</td>
+                <td className="min-w-40 px-2 text-center">{item.email || '-'}</td>
                 <td className="min-w-40 px-2 text-center">{item.fullName}</td>
-
-                <td className="min-w-40 px-2 text-center">{item.problemDate}</td>
-                <td className="min-w-40 px-2 text-center">{item.project_name}</td>
-                <td className="min-w-40 px-2 text-center">{item.organization_name}</td>
-
+                <td className="min-w-40 px-2 text-center">{moment(item?.problemDate).format('YYYY-MM-DD')}</td>
+                <td className="min-w-40 px-2 text-center">{item.project_name || '-'}</td>
+                <td className="min-w-40 px-2 text-center">{item.organization_name || '-'}</td>
                 <th className="p-4 text-center"></th>
               </tr>
             ))

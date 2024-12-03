@@ -505,6 +505,74 @@ const useStore = create((set) => ({
     }
   },
 
+  commentProjects:null,
+  fetchCommentsProject: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/client/getProjectComments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ commentProjects: response.data, isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  commentAct:null,
+  fetchCommentsAct: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/client/getActivityComments/${id}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ commentAct: response.data, isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  openions:null,
+  fetchOpenions: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/masterAdmin/getOpinions/${id}?page=1&per_page=50`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ openions: response.data.opinions, isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+  deleteOpenion: async (projid, id) => {
+    set({ isLoading: true, error: null });
+    try {
+      await DataTransfer.delete(`/api/masterAdmin/deleteOpinion/${Number(projid)}/${Number(id)}`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          // 'Content-Type': 'application/json',
+          // Accept: 'application/json',
+        },
+      });
+      set({ isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
 }));
 
 export default useStore;

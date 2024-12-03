@@ -34,8 +34,8 @@ const Login = () => {
 
       setToken(response.data.token);
       const user = {
-        email: response?.data?.response?.email,
-        name: response?.data?.response?.name,
+        email: response?.data?.response?.admin?.email,
+        name: response?.data?.response?.admin?.name,
         role: type ? 'Master' : 'OrgAdmin',
       };
       setUser(user);

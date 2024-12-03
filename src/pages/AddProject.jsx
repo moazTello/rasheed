@@ -108,7 +108,7 @@ const AddProject = () => {
       toast.success('يتم الآن ضغط الصور');
       const imageArray = Array.isArray(data.Images) ? data.Images : Array.from(data.Images);
       for (const [index, file] of imageArray.entries()) {
-        if (file.size > 400 * 1024) {
+        if (file.size > 800 * 1024) {
           const compressedImage = await imageCompression(file, compressionOptions);
           formData.append(`images[${index}]`, compressedImage);
         } else {
@@ -136,7 +136,7 @@ const AddProject = () => {
       } else {
         response = await addProjectOrg(formData);
       }
-      console.log(response);
+      // console.log(response.data.proId);
       const activitiesAll = data.activities;
       // for (const [index, details] of activitiesAll.entries()) {
 
@@ -164,7 +164,7 @@ const AddProject = () => {
         if (details?.images && details.images.length > 0) {
           toast.success('يتم الآن ضغط صور النشاط');
           for (const [sec, file] of details.images.entries()) {
-            if (file.size > 400 * 1024) {
+            if (file.size > 800 * 1024) {
               const compressedImage = await imageCompression(file, compressionOptions);
               formData2.append(`images[${sec}]`, compressedImage);
             } else {
@@ -176,9 +176,9 @@ const AddProject = () => {
           formData2.append(`pdf`, details.pdfTest);
         }
         if (user?.role === 'Master') {
-          await addActivityMaster(formData2, 17);
+          await addActivityMaster(formData2, response.data.proId);
         } else {
-          await addActivityOrg(formData2, 17);
+          await addActivityOrg(formData2, response.data.proId);
         }
       }
 

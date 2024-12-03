@@ -1,9 +1,13 @@
 import { FaTrashCan } from 'react-icons/fa6';
 import { FaPaintBrush } from 'react-icons/fa';
 import { LuClipboardEdit } from 'react-icons/lu';
+import { BiDetail } from 'react-icons/bi';
 import { useState } from 'react';
-const CustomTable = ({ data, remove, edit }) => {
+import { useNavigate, useParams } from 'react-router-dom';
+const CustomTable = ({ data, remove, edit, comment}) => {
+  const navigate = useNavigate();
   const [tableColor, setTableColor] = useState(true);
+  const {orgid, projid} = useParams();
   return (
     <div className="overflow-auto rounded-lg h-fit max-h-[20vh] no-scrollbar">
       <table className="table w-full">
@@ -15,6 +19,7 @@ const CustomTable = ({ data, remove, edit }) => {
           >
             <th className="px-2 min-w-20">الحذف</th>
             <th className="px-2 min-w-20">التعديل</th>
+            {comment && <th className="px-2 min-w-20">التعليقات</th>}
             <th className="p-4">الوصف</th>
             {data[0].type && <th className="p-4">العنوان</th>}
             <th className="p-4">
@@ -68,6 +73,17 @@ const CustomTable = ({ data, remove, edit }) => {
                   </button>
                 </div>
               </td>
+              {comment && <td className="px-6 min-w-20">
+                <div className="w-full flex justify-center py-2">
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${projid}/comments/${item?.backId}`)}
+                    className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-blue-500 hover:border-2 hover:border-blue-500 hover:text-blue-500"
+                  >
+                    <BiDetail />
+                  </button>
+                </div>
+              </td>}
               <td className="min-w-40 px-2 text-center">{item.text}</td>
               {item.type && <td className="min-w-40 px-2 text-center">{item.type}</td>}
               <td className="p-4 text-center"> {item?.backId}</td>

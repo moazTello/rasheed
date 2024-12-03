@@ -17,6 +17,10 @@ import { Toaster } from 'react-hot-toast';
 import PrivateRoute from './pages/protectedRoutes/PrivateRoute';
 import Problems from './pages/Problems';
 import EditProject from './pages/EditProject';
+import Comments from './pages/Comments';
+import Openions from './pages/Openions';
+import OpenionDetails from './pages/OpenionDetails';
+import CommentsAct from './pages/CommentsAct';
 
 function App() {
   return (
@@ -126,6 +130,38 @@ function App() {
               element={
                 <PrivateRoute allowedRoles={['OrgAdmin', 'Master']}>
                   <Suggestions />
+                </PrivateRoute>
+              }
+            />
+              <Route
+              path="projectdetails/:projid/comments"
+              element={
+                <PrivateRoute allowedRoles={['OrgAdmin', 'Master']}>
+                  <Comments />
+                </PrivateRoute>
+              }
+            />
+              <Route
+              path="projectdetails/:projid/comments/:actid"
+              element={
+                <PrivateRoute allowedRoles={['OrgAdmin', 'Master']}>
+                  <CommentsAct />
+                </PrivateRoute>
+              }
+            />
+               <Route
+              path="projectdetails/:projid/openions"
+              element={
+                <PrivateRoute allowedRoles={['Master']}>
+                  <Openions />
+                </PrivateRoute>
+              }
+            />
+              <Route
+              path="projectdetails/:projid/openiondetails/:opid"
+              element={
+                <PrivateRoute allowedRoles={['Master']}>
+                  <OpenionDetails />
                 </PrivateRoute>
               }
             />

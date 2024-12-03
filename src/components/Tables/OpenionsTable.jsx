@@ -5,30 +5,30 @@ import {
 // import { IoIosCloseCircle } from 'react-icons/io';
 // import { IoCloseSharp } from 'react-icons/io5';
 import { FaPaintBrush } from 'react-icons/fa';
-import { LuClipboardEdit } from 'react-icons/lu';
 import { BiDetail } from 'react-icons/bi';
 import { useState } from 'react';
-import { images } from '../../constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import useStore from '../../zustand/useStore';
 import toast from 'react-hot-toast';
-const ProjectsTable = ({ data }) => {
-  const { deleteProjectMaster, fetchOrganizationsList, isLoading, deleteProjectOrg, user } = useStore();
-  const { orgid } = useParams();
+const OpenionsTable = ({ data }) => {
+  const { isLoading, user, deleteOpenion, fetchOpenions } = useStore();
+  const { orgid, projid } = useParams();
   const [tableColor, setTableColor] = useState(true);
   const navigate = useNavigate();
+  const openionsDetails = (id) => {
+    sessionStorage.setItem("openion",data[id]);
+    navigate(`/rasheed/organizations/${orgid}/projectdetails/${projid}/openiondetails/${id}`)
+  }
   const handleDelete = async (id) => {
     // eslint-disable-next-line no-restricted-globals
     var result = confirm('هل أنت متأكد من حذف المشروع ؟');
     if (!result) return;
     try {
       if (user?.role === 'Master') {
-        await deleteProjectMaster(id, orgid);
-        await fetchOrganizationsList();
-      } else {
-        await deleteProjectOrg(id);
+        await deleteOpenion(projid, id);
+        await fetchOpenions(projid);
+        toast.success('تم حذف الاستطلاع بنجاح');
       }
-      toast.success('تم حذف المشروع بنجاح');
     } catch (error) {
       toast.error('حذث خطأ ما');
     }
@@ -45,17 +45,8 @@ const ProjectsTable = ({ data }) => {
             } `}
           >
             <th className="px-2 min-w-20">الحذف</th>
-            <th className="px-2 min-w-20">التعديل</th>
-            {user.role === 'Master' && (
-              <>
-                <th className="px-2 min-w-20">التعليقات</th>
-                <th className="px-2 min-w-20">الاستطلاع</th>
-              </>
-            )}
-            <th className="p-4">التقييم</th>
-            <th className="p-4">العنوان</th>
-            <th className="p-4">المشروع</th>
-            <th className="p-4">الشعار</th>
+            <th className="px-2 min-w-20">التفاصيل</th>
+            <th className="p-4">الاسم</th>
             <th className="p-4">
               <button onClick={() => setTableColor((old) => !old)}>
                 <FaPaintBrush size={16} />
@@ -116,50 +107,15 @@ const ProjectsTable = ({ data }) => {
                 <td className="px-6 min-w-20">
                   <div className="w-full flex justify-center py-2">
                     <button
-                      onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${item.id}/editProject`)}
-                      className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-green-500 hover:border-2 hover:border-green-500 hover:text-green-500"
+                      onClick={() => openionsDetails(item.id)}
+                      className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
                     >
-                      <LuClipboardEdit />
+                      <BiDetail />
                     </button>
                   </div>
                 </td>
-                {user.role === 'Master' && (
-                  <td className="px-6 min-w-20">
-                    <div className="w-full flex justify-center py-2">
-                      <button
-                        onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${item.id}/comments`)}
-                        className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-primary hover:border-2 hover:border-primary hover:text-primary"
-                      >
-                        <BiDetail />
-                      </button>
-                    </div>
-                  </td>
-                )}
-                {user.role === 'Master' && (
-                  <td className="px-6 min-w-20">
-                    <div className="w-full flex justify-center py-2">
-                      <button
-                        onClick={() => navigate(`/rasheed/organizations/${orgid}/projectdetails/${item.id}/openions`)}
-                        className="w-8 h-8 flex justify-center rounded-md items-center text-white hover:bg-slate-50 bg-blue-500 hover:border-2 hover:border-blue-500 hover:text-blue-500"
-                      >
-                        <LuClipboardEdit />
-                      </button>
-                    </div>
-                  </td>
-                )}
-                <td className="min-w-40 px-2 text-center">{item?.rate}</td>
-                <td className="min-w-40 px-2 text-center">{item?.address}</td>
                 <td className="min-w-40 px-2 text-center">{item?.name}</td>
-                <td className="min-w-40 px-2 text-center">
-                  <div className="w-full flex justify-center py-5">
-                    <img
-                      className="w-16 rounded-xl"
-                      src={item?.logo !== 'no logo' ? item?.logo : images.loginLogo}
-                      alt="لوغو"
-                    />
-                  </div>
-                </td>
-                <th className="p-4 text-center"></th>
+                <th className="p-4 text-center">{item?.id}</th>
               </tr>
             ))
           )}
@@ -169,4 +125,4 @@ const ProjectsTable = ({ data }) => {
   );
 };
 
-export default ProjectsTable;
+export default OpenionsTable;

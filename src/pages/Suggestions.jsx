@@ -18,7 +18,7 @@ const Suggestions = () => {
         <p className="w-full text-right text-white text-sm md:text-lg">جدول كل الاقتراحات</p>
       </div>
       <div className="w-full p-2">
-      {!suggestions.length > 0  && !isLoading ? <p className="w-full text-center text-white text-sm md:text-lg">لا يوجد إقتراحات</p>
+      {!suggestions?.length > 0  && !isLoading ? <p className="w-full text-center text-white text-sm md:text-lg">لا يوجد إقتراحات</p>
         :<SuggestionsTable data={suggestions} />}
       </div>
     </div>
