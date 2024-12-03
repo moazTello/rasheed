@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/rasheed/static/css/main.bf687a4d.css",
-    "main.js": "/rasheed/static/js/main.e3858244.js",
+    "main.css": "/rasheed/static/css/main.a3d9b103.css",
+    "main.js": "/rasheed/static/js/main.bbf392aa.js",
     "static/media/Login_logo.png": "/rasheed/static/media/Login_logo.a256d84f270a58dbcdc3.png",
     "static/media/background.png": "/rasheed/static/media/background.2d2b72dd67ec4d75ea23.png",
     "index.html": "/rasheed/index.html",
-    "main.bf687a4d.css.map": "/rasheed/static/css/main.bf687a4d.css.map",
-    "main.e3858244.js.map": "/rasheed/static/js/main.e3858244.js.map"
+    "main.a3d9b103.css.map": "/rasheed/static/css/main.a3d9b103.css.map",
+    "main.bbf392aa.js.map": "/rasheed/static/js/main.bbf392aa.js.map"
   },
   "entrypoints": [
-    "static/css/main.bf687a4d.css",
-    "static/js/main.e3858244.js"
+    "static/css/main.a3d9b103.css",
+    "static/js/main.bbf392aa.js"
   ]
 }
