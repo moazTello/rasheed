@@ -10,6 +10,10 @@
     scrollbar-width: none;
   }
 }
-body{
-  background-image: linear-gradient(to bottom, #1B1B35, #4953EC, #111) ;
+body {
+  /* background-image: linear-gradient(to bottom, #1B1B35, #4953EC, #111); */
+  background-image: url('./assets/images/back.png');
+  background-position: 'center';
+  background-repeat: no-repeat;
+  background-size: cover;
 }

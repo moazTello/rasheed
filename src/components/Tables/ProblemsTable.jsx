@@ -118,7 +118,7 @@ const ProblemsTable = ({ data }) => {
                 <td className="min-w-40 px-2 text-center">{moment(item?.problemDate).format('YYYY-MM-DD')}</td>
                 <td className="min-w-40 px-2 text-center">{item.project_name || '-'}</td>
                 <td className="min-w-40 px-2 text-center">{item.organization_name || '-'}</td>
-                <th className="p-4 text-center"></th>
+                <th className="p-4 text-center">{index + 1}</th>
               </tr>
             ))
           )}

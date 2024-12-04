@@ -10,7 +10,7 @@ const Organizations = () => {
     fetchOrganizationsList();
   }, [fetchOrganizationsList]);
   return (
-    <div className="w-full h-fit py-8 md:py-32">
+    <div className="w-full min-h-[100vh] h-fit py-8 md:py-32">
       <div className="w-full flex flex-col md:flex-row justify-center items-center">
         <ReferralTracking
           title="المشاريع"

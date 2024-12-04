@@ -16,9 +16,9 @@ const OpenionsTable = ({ data }) => {
   const [tableColor, setTableColor] = useState(true);
   const navigate = useNavigate();
   const openionsDetails = (id) => {
-    sessionStorage.setItem("openion",data[id]);
-    navigate(`/rasheed/organizations/${orgid}/projectdetails/${projid}/openiondetails/${id}`)
-  }
+    sessionStorage.setItem('openion', data[id]);
+    navigate(`/rasheed/organizations/${orgid}/projectdetails/${projid}/openiondetails/${id}`);
+  };
   const handleDelete = async (id) => {
     // eslint-disable-next-line no-restricted-globals
     var result = confirm('هل أنت متأكد من حذف المشروع ؟');
@@ -115,7 +115,7 @@ const OpenionsTable = ({ data }) => {
                   </div>
                 </td>
                 <td className="min-w-40 px-2 text-center">{item?.name}</td>
-                <th className="p-4 text-center">{item?.id}</th>
+                <th className="p-4 text-center">{index + 1}</th>
               </tr>
             ))
           )}

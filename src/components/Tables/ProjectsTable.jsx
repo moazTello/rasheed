@@ -147,7 +147,9 @@ const ProjectsTable = ({ data }) => {
                     </div>
                   </td>
                 )}
-                <td className="min-w-40 px-2 text-center">{item?.allWhoRate} / {item?.rate}</td>
+                <td className="min-w-40 px-2 text-center">
+                  {item?.allWhoRate} / {item?.rate}
+                </td>
                 <td className="min-w-40 px-2 text-center">{item?.address}</td>
                 <td className="min-w-40 px-2 text-center">{item?.name}</td>
                 <td className="min-w-40 px-2 text-center">
@@ -159,7 +161,7 @@ const ProjectsTable = ({ data }) => {
                     />
                   </div>
                 </td>
-                <th className="p-4 text-center"></th>
+                <th className="p-4 text-center">{index + 1}</th>
               </tr>
             ))
           )}

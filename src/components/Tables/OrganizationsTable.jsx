@@ -148,7 +148,7 @@ const OrganizationsTable = ({ data }) => {
                     </div>
                   </td>
                 )}
-                <th className="p-4 text-center"></th>
+                <th className="p-4 text-center">{index + 1}</th>
               </tr>
             ))
           )}
