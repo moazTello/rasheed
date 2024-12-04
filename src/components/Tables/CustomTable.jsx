@@ -20,7 +20,7 @@ const CustomTable = ({ data, remove, edit, comment}) => {
             <th className="px-2 min-w-20">الحذف</th>
             <th className="px-2 min-w-20">التعديل</th>
             {comment && <th className="px-2 min-w-20">التعليقات</th>}
-            {data[0].rate && <th className="px-2 min-w-20">التقييم</th>}
+            {data[0].rate !== 0 && data[0].rate && <th className="px-2 min-w-20">التقييم</th>}
             <th className="p-4">الوصف</th>
             {data[0].type && <th className="p-4">العنوان</th>}
             <th className="p-4">
@@ -85,7 +85,7 @@ const CustomTable = ({ data, remove, edit, comment}) => {
                   </button>
                 </div>
               </td>}
-              {item?.rate && <td className="min-w-40 px-2 text-center">{item?.allWhoRate} / {item.rate}</td>}
+              {item?.rate !== 0 && item?.rate && <td className="min-w-40 px-2 text-center">{item?.allWhoRate} / {item.rate}</td>}
               <td className="min-w-40 px-2 text-center">{item.text}</td>
               {item.type && <td className="min-w-40 px-2 text-center">{item.type}</td>}
               <td className="p-4 text-center"> {item?.backId}</td>
