@@ -1,8 +1,14 @@
 import React, { useEffect, useRef } from "react";
 import { Chart } from "chart.js/auto";
+import useStore from "../zustand/useStore";
 // import ReferralTracking from "../components/Fields/StatisticsCircle";
 
 const Traffics = () => {
+  const {getTrafics, trafics} = useStore();
+  useEffect(() => {
+    getTrafics()
+  },[])
+  console.log(trafics)
   const chartRef = useRef(null);
   const chartRef2 = useRef(null);
   const chartRef3 = useRef(null);

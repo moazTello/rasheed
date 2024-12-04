@@ -97,6 +97,7 @@ const EditProject = () => {
           images: item.images,
           pdfTest: item.pdf,
           backId: item.id,
+          rate:item?.rate
         });
       });
       setValue('newItemTrigger', false);

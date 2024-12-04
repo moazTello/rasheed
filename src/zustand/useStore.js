@@ -573,6 +573,24 @@ const useStore = create((set) => ({
     }
   },
 
+  trafics:null,
+  getTrafics: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/masterAdmin/getTraffic`, {
+        headers: {
+          Authorization: `Bearer ${useStore.getState().token}`,
+          Accept: 'application/json',
+        },
+      });
+      set({ trafics: response.data.traffic, isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
+
+
 }));
 
 export default useStore;
