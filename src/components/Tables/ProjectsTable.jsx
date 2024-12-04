@@ -147,7 +147,7 @@ const ProjectsTable = ({ data }) => {
                     </div>
                   </td>
                 )}
-                <td className="min-w-40 px-2 text-center">{item?.rate}</td>
+                <td className="min-w-40 px-2 text-center">{item?.allWhoRate} / {item?.rate}</td>
                 <td className="min-w-40 px-2 text-center">{item?.address}</td>
                 <td className="min-w-40 px-2 text-center">{item?.name}</td>
                 <td className="min-w-40 px-2 text-center">

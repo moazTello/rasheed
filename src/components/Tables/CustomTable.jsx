@@ -85,7 +85,7 @@ const CustomTable = ({ data, remove, edit, comment}) => {
                   </button>
                 </div>
               </td>}
-              {item?.rate && <td className="min-w-40 px-2 text-center">{item.rate}</td>}
+              {item?.rate && <td className="min-w-40 px-2 text-center">{item?.allWhoRate} / {item.rate}</td>}
               <td className="min-w-40 px-2 text-center">{item.text}</td>
               {item.type && <td className="min-w-40 px-2 text-center">{item.type}</td>}
               <td className="p-4 text-center"> {item?.backId}</td>
