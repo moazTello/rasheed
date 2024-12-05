@@ -107,7 +107,7 @@ const Traffics = () => {
   const chartData = useMemo(
     () => [
       {
-        title: 'الزيارات الشهرية على التطبيق',
+        title: 'المستخدمين الجدد خلال شهر على التطبيق',
         subtitle: `الزيارات للسنة ${selectedYear}`,
         labels: traficYearData.labels,
         datasets: [
@@ -120,6 +120,13 @@ const Traffics = () => {
             tension: 0.3,
             fill: true,
           },
+        ],
+      },
+      {
+        title: 'الزيارات الشهرية على التطبيق',
+        subtitle: `الزيارات للسنة ${selectedYear}`,
+        labels: traficYearData.labels,
+        datasets: [
           {
             label: 'الزيارات',
             data: traficYearData.total,
@@ -132,7 +139,7 @@ const Traffics = () => {
         ],
       },
       {
-        title: 'الزيارات اليومية على التطبيق',
+        title: 'المستخدمين الجدد خلال اليوم على التطبيق',
         subtitle: `الزيارات للشهر ${availableMonths.find((m) => m.value === selectedMonth)?.label || ''}`,
         labels: traficMonthData.labels,
         datasets: [
@@ -145,6 +152,13 @@ const Traffics = () => {
             tension: 0.3,
             fill: true,
           },
+        ],
+      },
+      {
+        title: 'الزيارات اليومية على التطبيق',
+        subtitle: `الزيارات للشهر ${availableMonths.find((m) => m.value === selectedMonth)?.label || ''}`,
+        labels: traficMonthData.labels,
+        datasets: [
           {
             label: 'الزيارات',
             data: traficMonthData.total,

@@ -589,7 +589,21 @@ const useStore = create((set) => ({
       set({ error: error.message, isLoading: false });
     }
   },
-
+  homeData:null,
+  fetchHomeData: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await DataTransfer.get(`/api/client/infoForHomePage`, {
+        headers: {
+          Accept: 'application/json',
+        },
+      });
+      set({ homeData: response.data, isLoading: false });
+    } catch (error) {
+      console.log(error);
+      set({ error: error.message, isLoading: false });
+    }
+  },
 
 }));
 

@@ -9,6 +9,8 @@ const ReferralTracking = ({
   secondSideTitle,
   firstSideNumber = 0,
   secondSideNumber = 1,
+  projects = 0,
+  problems = null
 }) => {
   const radius = 90;
   const circumference = 2 * Math.PI * radius;
@@ -24,11 +26,11 @@ const ReferralTracking = ({
         <div className="flex flex-col md:mr-6 lg:mr-12 mb-4 md:mb-0">
           <div className="p-5 bg-gradient-to-br from-[#060C29] to-[#040C30] rounded-lg mb-5 min-w-[220px]">
             <p className="text-gray-400 text-sm mb-1 w-full text-right">{firstSideTitle}</p>
-            <p className="text-white text-lg font-bold w-full text-right">{firstSideNumber}</p>
+            <p className="text-white text-lg font-bold w-full text-right">{problems ? problems : firstSideNumber}</p>
           </div>
           <div className="p-5 bg-gradient-to-br from-[#060C29] to-[#040C30] rounded-lg min-w-[170px]">
             <p className="text-gray-400 text-sm mb-1 w-full text-right">{secondSideTitle}</p>
-            <p className="text-white text-lg font-bold w-full text-right">{secondSideNumber}</p>
+            <p className="text-white text-lg font-bold w-full text-right">{projects}</p>
           </div>
         </div>
         <div className="flex justify-center">
