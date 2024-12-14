@@ -210,9 +210,9 @@ const Traffics = () => {
           ))}
         </select>
       </div>
-      <div className="w-full flex flex-col justify-center items-center p-4">
+      <div className="w-full p-4">
         {chartData.map((item, index) => (
-          <div key={index} className="bg-stone-900 bg-opacity-70 rounded-2xl p-5 md:p-7 m-2 md:w-[100%]">
+          <div key={index} className="bg-stone-900 bg-opacity-70 rounded-2xl p-5 md:p-7 m-2 md:w-[48%] float-start">
             <div className="mb-5 p-5">
               <div className="flex flex-col items-end">
                 <h2 className="text-lg w-full text-right font-bold text-white mb-1">{item.title}</h2>

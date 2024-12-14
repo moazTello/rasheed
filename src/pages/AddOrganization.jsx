@@ -310,7 +310,7 @@ const AddOrganization = () => {
               type="email"
             />
           </div>
-          <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة</p>
+          <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة <span className="text-xs text-red-200 mr-10">الحد الأقصى ٤٠٠٠٠ حرف</span></p>
           <textarea
             required
             className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
@@ -319,7 +319,7 @@ const AddOrganization = () => {
           />
           <div className="flex flex-col-reverse md:flex-row w-full items-center justify-between ">
             <div className="flex flex-col items-end w-full mr-0 md:mr-2">
-              <p className="text-right pr-1 text-white text-sm md:text-lg my-2">الرسالة</p>
+              <p className="text-right pr-1 text-white text-sm md:text-lg my-2">الرسالة <span className="text-xs text-red-200 mr-10">الحد الأقصى ٤٠٠٠٠ حرف</span></p>
               <textarea
                 required
                 className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
@@ -328,7 +328,7 @@ const AddOrganization = () => {
               />
             </div>
             <div className="flex flex-col items-end w-full ml-0 md:ml-2">
-              <p className="text-right pr-1 text-white text-sm md:text-lg my-2">الرؤية</p>
+              <p className="text-right pr-1 text-white text-sm md:text-lg my-2">الرؤية <span className="text-xs text-red-400 mr-10">الحد الأقصى ٤٠٠٠٠ حرف</span></p>
               <textarea
                 required
                 className="w-full outline-none min-h-40 resize-none rounded-2xl bg-[#181818] bg-opacity-80 text-right p-5 text-white text-sm md:text-lg"
@@ -345,7 +345,7 @@ const AddOrganization = () => {
             >
               إضافة وصف +
             </button>
-            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">عن المنظمة <span className="text-xs text-red-400 mr-10">الحد الأقصى ٤٠٠٠٠ حرف</span></p>
           </div>
           {details.length > 0 && <CustomTable data={details} remove={remove} edit={editDetail} />}
           <div className="w-full flex justify-between items-center mb-4">

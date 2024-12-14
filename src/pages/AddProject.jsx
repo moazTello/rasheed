@@ -383,7 +383,7 @@ const AddProject = () => {
             >
               إضافة وصف +
             </button>
-            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">مواصفات المشروع</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">مواصفات المشروع <span className="text-xs text-red-400 mr-10">الحد الأقصى ٤٠٠٠٠ حرف</span></p>
           </div>
           {summary.length > 0 && <CustomTable data={summary} remove={remove} edit={editDetail} />}
           <div className="w-full flex justify-between items-center mb-4">
@@ -394,7 +394,7 @@ const AddProject = () => {
             >
               إضافة نشاط+
             </button>
-            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">نشاطات المشروع</p>
+            <p className="text-right pr-1 text-white text-sm md:text-lg my-4">نشاطات المشروع <span className="text-xs text-red-400 mr-10">الحد الأقصى ٤٠٠٠٠ حرف</span></p>
           </div>
           {numbersModal && (
             <div className="top-0 left-0 bg-[#363333] rounded-lg w-full mb-5 h-full bg-opacity-90 p-5">
